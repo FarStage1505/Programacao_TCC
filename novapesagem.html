@@ -1,0 +1,2679 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LoadSense | Nova Pesagem</title>
+
+    <style>
+        :root {
+            --sidebar-width: 255px;
+            --topbar-height: 59px;
+
+            --bg: #080c09;
+            --sidebar: #101110;
+            --topbar: #0b0e0c;
+
+            --card: #121412;
+            --input: #242725;
+            --input-hover: #292c2a;
+
+            --border: #292c29;
+            --border-light: #323532;
+
+            --white: #f5f5f5;
+            --muted: #999d99;
+            --muted2: #777c78;
+
+            --orange: #ff571b;
+            --orange2: #ff7b23;
+
+            --green: #24d66c;
+            --green-dark: #0f351e;
+
+            --red: #ff2948;
+            --red-dark: #3b1119;
+
+            --yellow: #ffd23c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: var(--bg);
+            color: var(--white);
+
+            overflow: hidden;
+        }
+
+        button,
+        input,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        input,
+        textarea {
+            outline: none;
+        }
+
+        svg {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+
+        /* ==================================================
+           SIDEBAR
+        ================================================== */
+
+        .sidebar {
+            position: fixed;
+
+            top: 0;
+            left: 0;
+            bottom: 0;
+
+            width: var(--sidebar-width);
+
+            background: #101110;
+
+            border-right:
+                1px solid #292c29;
+
+            z-index: 100;
+        }
+
+
+        /* LOGO */
+
+        .logo-area {
+            height: var(--topbar-height);
+
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            padding:
+                0 20px;
+
+            border-bottom:
+                1px solid #292c29;
+        }
+
+        .logo-box {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+
+            border:
+                1px solid #353835;
+
+            border-radius: 9px;
+
+            background: #070807;
+
+            flex-shrink: 0;
+        }
+
+        .logo-box::before {
+            content: "";
+
+            position: absolute;
+
+            width: 25px;
+            height: 26px;
+
+            border:
+                3px solid var(--orange);
+
+            border-left-color:
+                transparent;
+
+            border-radius: 8px;
+
+            transform:
+                rotate(-11deg)
+                skew(-7deg);
+        }
+
+        .logo-s {
+            position: relative;
+
+            z-index: 2;
+
+            color: var(--orange);
+
+            font-size: 20px;
+            font-weight: 900;
+            font-style: italic;
+
+            transform:
+                skew(-8deg);
+        }
+
+        .logo-name {
+            font-size: 17px;
+
+            font-weight: 800;
+
+            line-height: 16px;
+
+            letter-spacing:
+                -0.4px;
+        }
+
+        .logo-name span {
+            color: var(--orange);
+        }
+
+        .logo-subtitle {
+            margin-top: 4px;
+
+            color: #aeb2ae;
+
+            font-size: 7px;
+
+            font-weight: 600;
+
+            line-height: 8px;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* MENU */
+
+        .sidebar-menu {
+            padding:
+                13px 11px;
+        }
+
+        .sidebar-item {
+            min-height: 43px;
+
+            padding:
+                0 13px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            position: relative;
+
+            color: #bfc3bf;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            margin-bottom: 1px;
+
+            transition: 0.15s;
+        }
+
+        .sidebar-item:hover {
+            background: #181a18;
+            color: white;
+        }
+
+        .sidebar-item.active {
+            color: white;
+
+            background:
+                linear-gradient(
+                    105deg,
+                    #f64e12,
+                    #ff7b24
+                );
+
+            font-weight: 600;
+
+            box-shadow:
+                0 8px 23px
+                rgba(255, 88, 24, .22);
+        }
+
+        .sidebar-item svg {
+            width: 18px;
+            height: 18px;
+
+            flex-shrink: 0;
+        }
+
+        .alert-number {
+            width: 22px;
+            height: 22px;
+
+            margin-left: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #ed1233;
+
+            color: white;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+
+        /* ESP */
+
+        .esp-card {
+            position: absolute;
+
+            left: 15px;
+            right: 15px;
+            bottom: 16px;
+
+            padding:
+                12px 13px;
+
+            background: #1a1c1a;
+
+            border:
+                1px solid #292c29;
+
+            border-radius: 8px;
+        }
+
+        .esp-title {
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+
+            color: white;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .green-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #29d56c;
+        }
+
+        .esp-description {
+            margin-top: 7px;
+
+            color: #959995;
+
+            font-size: 9px;
+        }
+
+
+        /* ==================================================
+           TOPBAR
+        ================================================== */
+
+        .topbar {
+            position: fixed;
+
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+
+            height: var(--topbar-height);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding:
+                0 23px;
+
+            background: #0b0e0c;
+
+            border-bottom:
+                1px solid #292c29;
+
+            z-index: 90;
+        }
+
+        .top-search {
+            width: 435px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            padding:
+                0 13px;
+
+            background: #272a28;
+
+            border:
+                1px solid transparent;
+
+            border-radius: 9px;
+
+            color: #999d99;
+        }
+
+        .top-search:focus-within {
+            border-color:
+                rgba(255, 87, 27, .7);
+        }
+
+        .top-search svg {
+            width: 17px;
+        }
+
+        .top-search input {
+            width: 100%;
+
+            color: white;
+
+            border: none;
+
+            background: transparent;
+
+            font-size: 13px;
+        }
+
+        .top-search input::placeholder {
+            color: #989c98;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+        }
+
+        .online-pill {
+            height: 30px;
+
+            padding:
+                0 12px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            color: #2fd971;
+
+            background: #082617;
+
+            border:
+                1px solid #155e31;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+
+            font-weight: 600;
+        }
+
+        .online-pill span {
+            width: 7px;
+            height: 7px;
+
+            background: #2dd76e;
+
+            border-radius: 50%;
+        }
+
+        .bell {
+            position: relative;
+
+            width: 39px;
+            height: 39px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #d8dad8;
+
+            background: #171917;
+
+            border:
+                1px solid #2c2f2c;
+
+            border-radius: 9px;
+        }
+
+        .bell svg {
+            width: 18px;
+        }
+
+        .bell::after {
+            content: "";
+
+            position: absolute;
+
+            top: 7px;
+            right: 8px;
+
+            width: 6px;
+            height: 6px;
+
+            background: var(--orange);
+
+            border-radius: 50%;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff5015,
+                    #ff7e25
+                );
+
+            border-radius: 50%;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .profile-text strong {
+            display: block;
+
+            font-size: 11px;
+        }
+
+        .profile-text span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #979b97;
+
+            font-size: 9px;
+        }
+
+
+        /* ==================================================
+           MAIN
+        ================================================== */
+
+        .main {
+            position: fixed;
+
+            top: var(--topbar-height);
+            left: var(--sidebar-width);
+            right: 0;
+            bottom: 0;
+
+            overflow: auto;
+
+            background: #080c09;
+        }
+
+        .content {
+            width: calc(100% - 96px);
+            max-width: 1310px;
+
+            margin: 0 auto;
+
+            padding-top: 25px;
+        }
+
+        .page-title {
+            margin-bottom: 24px;
+        }
+
+        .page-title h1 {
+            font-size: 24px;
+
+            letter-spacing:
+                -0.7px;
+        }
+
+        .page-title p {
+            margin-top: 7px;
+
+            color: #9b9f9b;
+
+            font-size: 13px;
+        }
+
+
+        /* LAYOUT */
+
+        .weighing-layout {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 935px)
+                348px;
+
+            gap: 23px;
+
+            align-items: start;
+        }
+
+
+        /* ==================================================
+           CARD FORMULÁRIO
+        ================================================== */
+
+        .form-card {
+            min-height: 394px;
+
+            padding:
+                23px 23px 24px;
+
+            background: #121412;
+
+            border:
+                1px solid #292c29;
+
+            border-radius: 14px;
+        }
+
+
+        /* ETAPAS */
+
+        .steps {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr 1fr;
+
+            align-items: center;
+
+            margin-bottom: 29px;
+        }
+
+        .step-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .step-wrapper:not(:last-child)::after {
+            content: "";
+
+            flex: 1;
+
+            height: 1px;
+
+            margin:
+                0 10px;
+
+            background: #2a2d2a;
+        }
+
+        .step {
+            height: 44px;
+
+            display: inline-flex;
+            align-items: center;
+
+            gap: 9px;
+
+            padding:
+                0 12px;
+
+            color: #999d99;
+
+            border-radius: 10px;
+
+            white-space: nowrap;
+
+            font-size: 13px;
+        }
+
+        .step-circle {
+            width: 27px;
+            height: 27px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid #333633;
+
+            border-radius: 50%;
+
+            color: #9ca09c;
+
+            font-size: 12px;
+        }
+
+        .step.active {
+            color: white;
+
+            font-weight: 700;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #f85014,
+                    #ff7b23
+                );
+
+            box-shadow:
+                0 8px 24px
+                rgba(255, 87, 23, .18);
+        }
+
+        .step.active .step-circle {
+            color: white;
+
+            border-color:
+                rgba(255,255,255,.16);
+
+            background:
+                rgba(255,255,255,.14);
+        }
+
+        .step.complete {
+            color: #27d66b;
+
+            font-weight: 600;
+        }
+
+        .step.complete .step-circle {
+            color: #2ddb70;
+
+            border-color: #28ca66;
+
+            background: #0c301a;
+        }
+
+
+        /* FORM */
+
+        .stage {
+            display: none;
+        }
+
+        .stage.active {
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            column-gap: 15px;
+
+            row-gap: 19px;
+        }
+
+        .field label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #f2f2f2;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .field input,
+        .field textarea {
+            width: 100%;
+
+            color: white;
+
+            background: #252826;
+
+            border:
+                1px solid transparent;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            transition: 0.15s;
+        }
+
+        .field input {
+            height: 39px;
+
+            padding:
+                0 13px;
+        }
+
+        .field textarea {
+            min-height: 77px;
+
+            padding:
+                13px;
+
+            resize: vertical;
+        }
+
+        .field input:hover,
+        .field textarea:hover {
+            background: #292c2a;
+        }
+
+        .field input:focus,
+        .field textarea:focus {
+            border-color: #ef5428;
+        }
+
+        .field input::placeholder,
+        .field textarea::placeholder {
+            color: #999d99;
+        }
+
+        .full-field {
+            grid-column:
+                1 / 3;
+        }
+
+
+        /* BOTOES FORM */
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-top: 23px;
+        }
+
+        .back-button {
+            height: 38px;
+
+            padding:
+                0 16px;
+
+            color: #f1f1f1;
+
+            background: transparent;
+
+            border:
+                1px solid #303330;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .back-button:disabled {
+            color: #616561;
+
+            border-color: #202320;
+
+            cursor: default;
+        }
+
+        .next-button {
+            min-width: 93px;
+            height: 39px;
+
+            padding:
+                0 18px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #f75013,
+                    #ff7a23
+                );
+
+            border: none;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 9px 25px
+                rgba(255, 87, 23, .22);
+        }
+
+        .register-button {
+            min-width: 162px;
+        }
+
+
+        /* ==================================================
+           RESULTADO
+        ================================================== */
+
+        .result-card {
+            padding:
+                23px 22px;
+
+            background: #121412;
+
+            border:
+                1px solid #292c29;
+
+            border-radius: 14px;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 18px;
+        }
+
+        .result-header h2 {
+            font-size: 16px;
+
+            letter-spacing:
+                -0.25px;
+        }
+
+        .status-badge {
+            height: 23px;
+
+            padding:
+                0 10px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 6px;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        .status-badge::before {
+            content: "";
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+        }
+
+        .status-normal {
+            color: #28d96e;
+
+            background: #0d311b;
+
+            border:
+                1px solid #1d6138;
+        }
+
+        .status-normal::before {
+            background: #28d96e;
+        }
+
+        .status-atencao {
+            color: #ffd33d;
+
+            background: #382f10;
+
+            border:
+                1px solid #61551c;
+        }
+
+        .status-atencao::before {
+            background: #ffd33d;
+        }
+
+        .status-critico {
+            color: #ff3150;
+
+            background: #3a1018;
+
+            border:
+                1px solid #641f2c;
+        }
+
+        .status-critico::before {
+            background: #ff2948;
+        }
+
+
+        /* métricas */
+
+        .result-box {
+            min-height: 49px;
+
+            padding:
+                0 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 11px;
+
+            color: #a3a7a3;
+
+            background: #181b18;
+
+            border:
+                1px solid #2b2e2b;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+        }
+
+        .result-box strong {
+            color: white;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 13px;
+        }
+
+        .difference-box.normal {
+            border-color: #176837;
+
+            background: #0d2917;
+        }
+
+        .difference-box.normal strong {
+            color: #2bdd71;
+        }
+
+        .difference-box.critico {
+            border-color: #7a1726;
+
+            background: #241012;
+        }
+
+        .difference-box.critico strong {
+            color: #ff2948;
+        }
+
+        .difference-box.atencao {
+            border-color: #75611c;
+
+            background: #29230d;
+        }
+
+        .difference-box.atencao strong {
+            color: #ffd33d;
+        }
+
+
+        /* ALERTA */
+
+        .alert-box {
+            min-height: 75px;
+
+            margin-top: 15px;
+
+            padding:
+                14px 15px;
+
+            background: #351911;
+
+            border:
+                1px solid #71311e;
+
+            border-radius: 9px;
+        }
+
+        .alert-box small {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #a5a9a5;
+
+            font-size: 10px;
+        }
+
+        .alert-box strong {
+            color: #ff5a22;
+
+            font-size: 13px;
+        }
+
+        .alert-box.safe {
+            background: #102919;
+
+            border-color: #1e6538;
+        }
+
+        .alert-box.safe strong {
+            color: #2bdc70;
+        }
+
+        .formula {
+            margin-top: 17px;
+
+            color: #8f938f;
+
+            text-align: center;
+
+            font-size: 9px;
+
+            line-height: 15px;
+        }
+
+
+        /* ==================================================
+           TOAST
+        ================================================== */
+
+        .toast {
+            position: fixed;
+
+            right: 31px;
+            bottom: 31px;
+
+            width: 345px;
+
+            padding:
+                17px 18px;
+
+            display: flex;
+            align-items: flex-start;
+
+            gap: 11px;
+
+            color: white;
+
+            background: #0d100e;
+
+            border:
+                1px solid #303430;
+
+            border-radius: 9px;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,.35);
+
+            transform:
+                translateY(120px);
+
+            opacity: 0;
+
+            transition: .25s;
+
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform:
+                translateY(0);
+
+            opacity: 1;
+        }
+
+        .toast-icon {
+            width: 17px;
+            height: 17px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            color: #111;
+
+            background: #f0f1f0;
+
+            border-radius: 50%;
+
+            font-size: 10px;
+
+            font-weight: 900;
+        }
+
+        .toast strong {
+            display: block;
+
+            font-size: 11px;
+        }
+
+        .toast p {
+            margin-top: 6px;
+
+            color: #9da19d;
+
+            font-size: 10px;
+        }
+
+
+        /* lateral da prévia */
+
+        .right-handle {
+            position: fixed;
+
+            top: 45%;
+            right: -1px;
+
+            width: 26px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #bbb;
+
+            background: #0d0f0e;
+
+            border:
+                1px solid #303330;
+
+            border-radius:
+                20px 0 0 20px;
+
+            z-index: 300;
+        }
+
+
+        /* ==================================================
+           RESPONSIVO
+        ================================================== */
+
+        @media(max-width: 1200px) {
+
+            :root {
+                --sidebar-width: 210px;
+            }
+
+            .content {
+                width:
+                    calc(100% - 48px);
+            }
+
+            .weighing-layout {
+                grid-template-columns:
+                    1fr 320px;
+            }
+
+        }
+
+
+        @media(max-width: 900px) {
+
+            :root {
+                --sidebar-width: 66px;
+            }
+
+            .logo-text,
+            .sidebar-item span:not(.alert-number),
+            .esp-card,
+            .profile-text,
+            .online-pill {
+                display: none;
+            }
+
+            .logo-area {
+                justify-content: center;
+
+                padding: 0;
+            }
+
+            .sidebar-item {
+                justify-content: center;
+
+                padding: 0;
+            }
+
+            .alert-number {
+                position: absolute;
+
+                top: 2px;
+                right: 2px;
+
+                width: 17px;
+                height: 17px;
+
+                font-size: 8px;
+            }
+
+            .top-search {
+                width: 48vw;
+            }
+
+            .weighing-layout {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .result-card {
+                max-width: 500px;
+            }
+
+        }
+
+
+        @media(max-width: 650px) {
+
+            .content {
+                width:
+                    calc(100% - 24px);
+            }
+
+            .steps {
+                display: flex;
+
+                overflow-x: auto;
+            }
+
+            .step-wrapper::after {
+                min-width: 35px;
+            }
+
+            .form-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .full-field {
+                grid-column: auto;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <!-- ==================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo-area">
+
+            <div class="logo-box">
+                <span class="logo-s">S</span>
+            </div>
+
+            <div class="logo-text">
+
+                <div class="logo-name">
+                    LOAD<span>SENSE</span>
+                </div>
+
+                <div class="logo-subtitle">
+                    SUA LOGÍSTICA EM TEMPO<br>
+                    REAL
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <a class="sidebar-item" href="#">
+
+                <svg viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="6" height="6"></rect>
+                    <rect x="15" y="3" width="6" height="6"></rect>
+                    <rect x="3" y="15" width="6" height="6"></rect>
+                    <rect x="15" y="15" width="6" height="6"></rect>
+                </svg>
+
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a class="sidebar-item" href="#">
+
+                <svg viewBox="0 0 24 24">
+                    <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                    <path d="M3 9h18"></path>
+                    <path d="M9 4v16"></path>
+                </svg>
+
+                <span>Planilha Operacional</span>
+
+            </a>
+
+
+            <a class="sidebar-item active" href="#">
+
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M12 8v8"></path>
+                    <path d="M8 12h8"></path>
+                </svg>
+
+                <span>Nova Pesagem</span>
+
+            </a>
+
+
+            <a class="sidebar-item" href="#">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                    <path d="M10 21h4"></path>
+                </svg>
+
+                <span>Alertas</span>
+
+                <span class="alert-number">
+                    12
+                </span>
+
+            </a>
+
+
+            <a class="sidebar-item" href="#">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 3h9l4 4v14H6z"></path>
+                    <path d="M15 3v5h5"></path>
+                    <path d="M9 17v-4"></path>
+                    <path d="M12 17v-7"></path>
+                    <path d="M15 17v-2"></path>
+                </svg>
+
+                <span>Relatórios</span>
+
+            </a>
+
+
+            <a class="sidebar-item" href="#">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 12a8 8 0 1 0 2.5-5.7"></path>
+                    <path d="M4 4v6h6"></path>
+                    <path d="M12 8v5l3 2"></path>
+                </svg>
+
+                <span>Histórico</span>
+
+            </a>
+
+
+            <a class="sidebar-item" href="#">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="m12 3 1.4 4.6L18 9l-4.6 1.4L12 15l-1.4-4.6L6 9l4.6-1.4z"></path>
+                </svg>
+
+                <span>IA LoadSense</span>
+
+            </a>
+
+
+            <a class="sidebar-item" href="#">
+
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 2v3"></path>
+                    <path d="M12 19v3"></path>
+                    <path d="M2 12h3"></path>
+                    <path d="M19 12h3"></path>
+                    <path d="m4.9 4.9 2.1 2.1"></path>
+                    <path d="m17 17 2.1 2.1"></path>
+                    <path d="m19.1 4.9-2.1 2.1"></path>
+                    <path d="m7 17-2.1 2.1"></path>
+                </svg>
+
+                <span>Configurações</span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="esp-card">
+
+            <div class="esp-title">
+
+                <span class="green-dot"></span>
+
+                ESP32 conectado
+
+            </div>
+
+            <div class="esp-description">
+                HX711 · 80 SPS · estável
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ==================================================
+         TOPBAR
+    ================================================== -->
+
+    <header class="topbar">
+
+        <div class="top-search">
+
+            <svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-4-4"></path>
+            </svg>
+
+            <input
+                type="text"
+                placeholder="Buscar operação, placa, motorista..."
+            >
+
+        </div>
+
+
+        <div class="top-right">
+
+            <div class="online-pill">
+
+                <span></span>
+
+                Sistema online
+
+            </div>
+
+
+            <button class="bell">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                    <path d="M10 21h4"></path>
+                </svg>
+
+            </button>
+
+
+            <div class="profile">
+
+                <div class="avatar">
+                    RA
+                </div>
+
+                <div class="profile-text">
+
+                    <strong>
+                        Renato Admin
+                    </strong>
+
+                    <span>
+                        Administrador
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ==================================================
+         CONTEÚDO
+    ================================================== -->
+
+    <main class="main">
+
+        <div class="content">
+
+            <div class="page-title">
+
+                <h1>
+                    Nova Pesagem
+                </h1>
+
+                <p>
+                    Registre uma operação em etapas — cálculo automático em tempo real
+                </p>
+
+            </div>
+
+
+            <div class="weighing-layout">
+
+
+                <!-- ==========================================
+                     FORM
+                =========================================== -->
+
+                <section class="form-card">
+
+
+                    <!-- etapas -->
+
+                    <div class="steps">
+
+                        <div class="step-wrapper">
+
+                            <div
+                                class="step active"
+                                id="step1"
+                            >
+
+                                <span class="step-circle">
+                                    1
+                                </span>
+
+                                Caminhão vazio
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="step-wrapper">
+
+                            <div
+                                class="step"
+                                id="step2"
+                            >
+
+                                <span class="step-circle">
+                                    2
+                                </span>
+
+                                Carga separada
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="step-wrapper">
+
+                            <div
+                                class="step"
+                                id="step3"
+                            >
+
+                                <span class="step-circle">
+                                    3
+                                </span>
+
+                                Caminhão carregado
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ETAPA 1 -->
+
+                    <div
+                        class="stage active"
+                        id="stage1"
+                    >
+
+                        <div class="form-grid">
+
+                            <div class="field">
+
+                                <label>
+                                    Placa
+                                </label>
+
+                                <input
+                                    id="plate"
+                                    type="text"
+                                    placeholder="ABC1D23"
+                                >
+
+                            </div>
+
+
+                            <div class="field">
+
+                                <label>
+                                    Motorista
+                                </label>
+
+                                <input
+                                    id="driver"
+                                    type="text"
+                                    placeholder="Nome do motorista"
+                                >
+
+                            </div>
+
+
+                            <div class="field">
+
+                                <label>
+                                    Código RFID
+                                </label>
+
+                                <input
+                                    id="rfid"
+                                    type="text"
+                                    placeholder="RF-XXXXXX"
+                                >
+
+                            </div>
+
+
+                            <div class="field">
+
+                                <label>
+                                    Peso caminhão vazio (kg)
+                                </label>
+
+                                <input
+                                    id="emptyWeight"
+                                    type="number"
+                                    min="0"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-actions">
+
+                            <button
+                                class="back-button"
+                                disabled
+                            >
+                                Voltar
+                            </button>
+
+                            <button
+                                class="next-button"
+                                onclick="nextStage()"
+                            >
+                                Próximo
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ETAPA 2 -->
+
+                    <div
+                        class="stage"
+                        id="stage2"
+                    >
+
+                        <div class="form-grid">
+
+                            <div class="field">
+
+                                <label>
+                                    Origem
+                                </label>
+
+                                <input
+                                    id="origin"
+                                    type="text"
+                                    placeholder="Cidade de origem"
+                                >
+
+                            </div>
+
+
+                            <div class="field">
+
+                                <label>
+                                    Destino
+                                </label>
+
+                                <input
+                                    id="destination"
+                                    type="text"
+                                    placeholder="Cidade de destino"
+                                >
+
+                            </div>
+
+
+                            <div class="field">
+
+                                <label>
+                                    Tipo de carga
+                                </label>
+
+                                <input
+                                    id="cargoType"
+                                    type="text"
+                                    placeholder="Grãos, cimento..."
+                                >
+
+                            </div>
+
+
+                            <div class="field">
+
+                                <label>
+                                    Peso da carga (kg)
+                                </label>
+
+                                <input
+                                    id="cargoWeight"
+                                    type="number"
+                                    min="0"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-actions">
+
+                            <button
+                                class="back-button"
+                                onclick="previousStage()"
+                            >
+                                Voltar
+                            </button>
+
+                            <button
+                                class="next-button"
+                                onclick="nextStage()"
+                            >
+                                Próximo
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ETAPA 3 -->
+
+                    <div
+                        class="stage"
+                        id="stage3"
+                    >
+
+                        <div class="form-grid">
+
+                            <div class="field">
+
+                                <label>
+                                    Peso caminhão carregado (kg)
+                                </label>
+
+                                <input
+                                    id="loadedWeight"
+                                    type="number"
+                                    min="0"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                            <div class="field">
+                            </div>
+
+
+                            <div class="field full-field">
+
+                                <label>
+                                    Observações
+                                </label>
+
+                                <textarea
+                                    id="notes"
+                                    placeholder="Notas da operação..."
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-actions">
+
+                            <button
+                                class="back-button"
+                                onclick="previousStage()"
+                            >
+                                Voltar
+                            </button>
+
+                            <button
+                                class="next-button register-button"
+                                onclick="registerWeighing()"
+                            >
+                                Registrar pesagem
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- ==========================================
+                     RESULTADO
+                =========================================== -->
+
+                <aside class="result-card">
+
+                    <div class="result-header">
+
+                        <h2>
+                            Resultado em tempo real
+                        </h2>
+
+                        <span
+                            class="status-badge status-normal"
+                            id="statusBadge"
+                        >
+                            Normal
+                        </span>
+
+                    </div>
+
+
+                    <div class="result-box">
+
+                        <span>
+                            Peso esperado
+                        </span>
+
+                        <strong id="expectedResult">
+                            0 kg
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-box">
+
+                        <span>
+                            Peso real
+                        </span>
+
+                        <strong id="realResult">
+                            0 kg
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="result-box difference-box normal"
+                        id="differenceBox"
+                    >
+
+                        <strong
+                            style="
+                                color:white;
+                                font-family:inherit;
+                            "
+                        >
+                            Diferença
+                        </strong>
+
+                        <strong id="differenceResult">
+                            0 kg (0%)
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="alert-box"
+                        id="alertBox"
+                    >
+
+                        <small>
+                            ALERTA GERADO
+                        </small>
+
+                        <strong id="alertText">
+                            Aguardando dados
+                        </strong>
+
+                    </div>
+
+
+                    <p class="formula">
+                        Peso esperado = vazio + carga · Diferença = real − esperado
+                    </p>
+
+                </aside>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <button class="right-handle">
+        ‹
+    </button>
+
+
+
+    <!-- TOAST -->
+
+    <div
+        class="toast"
+        id="toast"
+    >
+
+        <span class="toast-icon">
+            ✓
+        </span>
+
+        <div>
+
+            <strong>
+                Pesagem registrada com sucesso!
+            </strong>
+
+            <p id="toastDescription">
+                Status: normal
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        let currentStage = 1;
+
+
+
+        /* ==========================================
+           ELEMENTOS
+        ========================================== */
+
+        const emptyWeight =
+            document.getElementById(
+                "emptyWeight"
+            );
+
+        const cargoWeight =
+            document.getElementById(
+                "cargoWeight"
+            );
+
+        const loadedWeight =
+            document.getElementById(
+                "loadedWeight"
+            );
+
+
+        const expectedResult =
+            document.getElementById(
+                "expectedResult"
+            );
+
+        const realResult =
+            document.getElementById(
+                "realResult"
+            );
+
+        const differenceResult =
+            document.getElementById(
+                "differenceResult"
+            );
+
+        const differenceBox =
+            document.getElementById(
+                "differenceBox"
+            );
+
+        const statusBadge =
+            document.getElementById(
+                "statusBadge"
+            );
+
+        const alertBox =
+            document.getElementById(
+                "alertBox"
+            );
+
+        const alertText =
+            document.getElementById(
+                "alertText"
+            );
+
+
+
+        /* ==========================================
+           FORMATAÇÃO
+        ========================================== */
+
+        function numberValue(element) {
+
+            const value =
+                Number(
+                    element.value
+                );
+
+            return Number.isFinite(value)
+                ? value
+                : 0;
+
+        }
+
+
+        function formatKg(value) {
+
+            return Math.round(value)
+                .toLocaleString(
+                    "pt-BR"
+                )
+                +
+                " kg";
+
+        }
+
+
+        function formatSignedKg(value) {
+
+            const signal =
+                value > 0
+                    ? "+"
+                    : "";
+
+            return (
+                signal
+                +
+                Math.round(value)
+                    .toLocaleString(
+                        "pt-BR"
+                    )
+                +
+                " kg"
+            );
+
+        }
+
+
+        function formatPercentage(value) {
+
+            if (!Number.isFinite(value)) {
+
+                return "0%";
+
+            }
+
+
+            const signal =
+                value > 0
+                    ? "+"
+                    : "";
+
+
+            const decimals =
+                Math.abs(value) >= 1000
+                    ? 1
+                    : (
+                        Number.isInteger(value)
+                            ? 0
+                            : 1
+                    );
+
+
+            return (
+                signal
+                +
+                value
+                    .toFixed(decimals)
+                    .replace(".", ",")
+                +
+                "%"
+            );
+
+        }
+
+
+
+        /* ==========================================
+           RESULTADO EM TEMPO REAL
+        ========================================== */
+
+        function updateResults() {
+
+            const empty =
+                numberValue(
+                    emptyWeight
+                );
+
+            const cargo =
+                numberValue(
+                    cargoWeight
+                );
+
+            const real =
+                numberValue(
+                    loadedWeight
+                );
+
+
+            const expected =
+                empty + cargo;
+
+
+            const difference =
+                real - expected;
+
+
+            const percentage =
+                expected > 0
+                    ? (
+                        difference
+                        /
+                        expected
+                    )
+                    * 100
+                    : 0;
+
+
+            expectedResult.textContent =
+                formatKg(
+                    expected
+                );
+
+
+            realResult.textContent =
+                formatKg(
+                    real
+                );
+
+
+            differenceResult.textContent =
+                `${formatSignedKg(difference)} (${formatPercentage(percentage)})`;
+
+
+            /*
+                Na gravação, enquanto ainda não existe
+                peso real do caminhão carregado o status
+                continua como Normal e aparece
+                "Aguardando dados".
+            */
+
+            if (
+                currentStage < 3
+                ||
+                real <= 0
+            ) {
+
+                setStatus(
+                    "normal",
+                    "Aguardando dados"
+                );
+
+                return;
+
+            }
+
+
+            const absolute =
+                Math.abs(
+                    percentage
+                );
+
+
+            if (
+                absolute <= 1
+            ) {
+
+                setStatus(
+                    "normal",
+                    "Peso dentro do esperado"
+                );
+
+            }
+
+            else if (
+                absolute <= 3
+            ) {
+
+                if (
+                    difference > 0
+                ) {
+
+                    setStatus(
+                        "atencao",
+                        "Peso acima do esperado"
+                    );
+
+                }
+
+                else {
+
+                    setStatus(
+                        "atencao",
+                        "Peso abaixo do esperado"
+                    );
+
+                }
+
+            }
+
+            else {
+
+                if (
+                    difference > 0
+                ) {
+
+                    setStatus(
+                        "critico",
+                        "Excesso de peso crítico"
+                    );
+
+                }
+
+                else {
+
+                    setStatus(
+                        "critico",
+                        "Possível falta de carga"
+                    );
+
+                }
+
+            }
+
+        }
+
+
+
+        /* ==========================================
+           STATUS
+        ========================================== */
+
+        function setStatus(
+            status,
+            message
+        ) {
+
+            statusBadge.className =
+                "status-badge";
+
+
+            differenceBox.className =
+                "result-box difference-box";
+
+
+            alertBox.className =
+                "alert-box";
+
+
+            if (
+                status === "normal"
+            ) {
+
+                statusBadge.classList.add(
+                    "status-normal"
+                );
+
+                differenceBox.classList.add(
+                    "normal"
+                );
+
+                statusBadge.textContent =
+                    "Normal";
+
+
+                if (
+                    message !==
+                    "Aguardando dados"
+                ) {
+
+                    alertBox.classList.add(
+                        "safe"
+                    );
+
+                }
+
+            }
+
+
+            if (
+                status === "atencao"
+            ) {
+
+                statusBadge.classList.add(
+                    "status-atencao"
+                );
+
+                differenceBox.classList.add(
+                    "atencao"
+                );
+
+                statusBadge.textContent =
+                    "Atenção";
+
+            }
+
+
+            if (
+                status === "critico"
+            ) {
+
+                statusBadge.classList.add(
+                    "status-critico"
+                );
+
+                differenceBox.classList.add(
+                    "critico"
+                );
+
+                statusBadge.textContent =
+                    "Crítico";
+
+            }
+
+
+            alertText.textContent =
+                message;
+
+        }
+
+
+
+        /* ==========================================
+           TROCAR ETAPA
+        ========================================== */
+
+        function renderStage() {
+
+            document
+                .querySelectorAll(
+                    ".stage"
+                )
+                .forEach(
+                    stage => {
+
+                        stage.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+            document
+                .getElementById(
+                    "stage"
+                    +
+                    currentStage
+                )
+                .classList
+                .add("active");
+
+
+
+            for (
+                let i = 1;
+                i <= 3;
+                i++
+            ) {
+
+                const step =
+                    document.getElementById(
+                        "step" + i
+                    );
+
+
+                const circle =
+                    step.querySelector(
+                        ".step-circle"
+                    );
+
+
+                step.className =
+                    "step";
+
+
+                if (
+                    i <
+                    currentStage
+                ) {
+
+                    step.classList.add(
+                        "complete"
+                    );
+
+                    circle.textContent =
+                        "✓";
+
+                }
+
+                else if (
+                    i ===
+                    currentStage
+                ) {
+
+                    step.classList.add(
+                        "active"
+                    );
+
+                    circle.textContent =
+                        i;
+
+                }
+
+                else {
+
+                    circle.textContent =
+                        i;
+
+                }
+
+            }
+
+
+            updateResults();
+
+        }
+
+
+
+        function nextStage() {
+
+            if (
+                currentStage < 3
+            ) {
+
+                currentStage++;
+
+                renderStage();
+
+            }
+
+        }
+
+
+        function previousStage() {
+
+            if (
+                currentStage > 1
+            ) {
+
+                currentStage--;
+
+                renderStage();
+
+            }
+
+        }
+
+
+
+        /* ==========================================
+           REGISTRAR
+        ========================================== */
+
+        function registerWeighing() {
+
+            updateResults();
+
+
+            const toast =
+                document.getElementById(
+                    "toast"
+                );
+
+
+            const toastDescription =
+                document.getElementById(
+                    "toastDescription"
+                );
+
+
+            toastDescription.textContent =
+                "Status: "
+                +
+                statusBadge.textContent
+                    .toLowerCase()
+                +
+                " · "
+                +
+                alertText.textContent;
+
+
+            toast.classList.add(
+                "show"
+            );
+
+
+            setTimeout(
+                function () {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                },
+                3200
+            );
+
+        }
+
+
+
+        /* ==========================================
+           INPUTS
+        ========================================== */
+
+        emptyWeight.addEventListener(
+            "input",
+            updateResults
+        );
+
+
+        cargoWeight.addEventListener(
+            "input",
+            updateResults
+        );
+
+
+        loadedWeight.addEventListener(
+            "input",
+            updateResults
+        );
+
+
+
+        renderStage();
+
+    </script>
+
+</body>
+
+</html>

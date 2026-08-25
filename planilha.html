@@ -1,0 +1,2838 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LoadSense | Planilha Operacional</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        :root {
+            --sidebar-width: 248px;
+            --topbar-height: 61px;
+
+            --background: #090d0a;
+            --sidebar: #111211;
+            --topbar: #0d100e;
+
+            --panel: #171817;
+            --panel2: #1c1e1c;
+            --header: #292b29;
+
+            --border: #2b2d2b;
+
+            --white: #f4f4f4;
+            --gray: #9a9d9a;
+            --gray2: #747874;
+
+            --orange: #ff591d;
+            --orange2: #ff7626;
+
+            --green: #2bd86f;
+            --red: #ff2949;
+            --yellow: #ffd437;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: "Inter", Arial, sans-serif;
+            background: var(--background);
+            color: var(--white);
+            overflow: hidden;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        svg {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+
+            width: var(--sidebar-width);
+
+            background: var(--sidebar);
+
+            border-right: 1px solid #292b29;
+
+            z-index: 100;
+        }
+
+        .logo-area {
+            height: var(--topbar-height);
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 0 17px;
+
+            border-bottom: 1px solid #292b29;
+        }
+
+        .logo-symbol {
+            width: 39px;
+            height: 39px;
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            background: #080908;
+
+            border: 1px solid #363836;
+            border-radius: 10px;
+        }
+
+        .logo-symbol::before {
+            content: "";
+
+            position: absolute;
+
+            width: 23px;
+            height: 24px;
+
+            border: 3px solid var(--orange);
+            border-left-color: transparent;
+
+            border-radius: 7px;
+
+            transform: rotate(-8deg) skew(-8deg);
+        }
+
+        .logo-symbol span {
+            color: var(--orange);
+
+            font-size: 19px;
+            font-weight: 900;
+            font-style: italic;
+
+            z-index: 2;
+        }
+
+        .logo-name {
+            font-size: 17px;
+            line-height: 17px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.4px;
+        }
+
+        .logo-name span {
+            color: var(--orange);
+        }
+
+        .logo-subtitle {
+            margin-top: 3px;
+
+            color: #b4b7b4;
+
+            font-size: 7.5px;
+            line-height: 9px;
+
+            font-weight: 600;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* menu */
+
+        .sidebar-menu {
+            padding: 13px 11px;
+        }
+
+        .sidebar-item {
+            min-height: 42px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            position: relative;
+
+            padding: 0 12px;
+
+            margin-bottom: 2px;
+
+            color: #bec2be;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            transition: 0.15s;
+        }
+
+        .sidebar-item:hover {
+            background: #191b19;
+            color: white;
+        }
+
+        .sidebar-item.active {
+            color: white;
+
+            font-weight: 600;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #f44d12,
+                    #ff7825
+                );
+
+            box-shadow:
+                0 7px 20px
+                rgba(255, 87, 24, 0.22);
+        }
+
+        .sidebar-item svg {
+            width: 18px;
+            height: 18px;
+
+            flex-shrink: 0;
+        }
+
+        .notification-count {
+            margin-left: auto;
+
+            width: 22px;
+            height: 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #eb1233;
+
+            color: white;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+
+        /* ESP32 */
+
+        .esp-status {
+            position: absolute;
+
+            left: 14px;
+            right: 14px;
+            bottom: 16px;
+
+            padding: 12px;
+
+            background: #191b19;
+
+            border: 1px solid #292b29;
+            border-radius: 8px;
+        }
+
+        .esp-title {
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .green-dot {
+            width: 7px;
+            height: 7px;
+
+            background: #2dd670;
+
+            border-radius: 50%;
+        }
+
+        .esp-description {
+            margin-top: 7px;
+
+            color: #939693;
+
+            font-size: 9px;
+        }
+
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+            position: fixed;
+
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+
+            height: var(--topbar-height);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 22px;
+
+            background: var(--topbar);
+
+            border-bottom: 1px solid #292b29;
+
+            z-index: 90;
+        }
+
+        .top-search {
+            width: 430px;
+            height: 39px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 0 13px;
+
+            background: #292b29;
+
+            border: 1px solid transparent;
+            border-radius: 8px;
+        }
+
+        .top-search:focus-within {
+            border-color: #d65026;
+        }
+
+        .top-search svg {
+            width: 17px;
+
+            color: #9da09d;
+        }
+
+        .top-search input {
+            width: 100%;
+
+            border: none;
+            outline: none;
+
+            background: transparent;
+
+            color: white;
+
+            font-size: 12px;
+        }
+
+        .top-search input::placeholder {
+            color: #929592;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .system-online {
+            height: 30px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 0 12px;
+
+            background: #092516;
+
+            color: #31d970;
+
+            border: 1px solid #185f33;
+            border-radius: 999px;
+
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .system-online span {
+            width: 7px;
+            height: 7px;
+
+            background: #28d56b;
+
+            border-radius: 50%;
+        }
+
+        .bell-button {
+            position: relative;
+
+            width: 39px;
+            height: 39px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #dadcda;
+
+            background: #171917;
+
+            border: 1px solid #2b2d2b;
+            border-radius: 9px;
+        }
+
+        .bell-button svg {
+            width: 18px;
+        }
+
+        .bell-dot {
+            position: absolute;
+
+            top: 7px;
+            right: 8px;
+
+            width: 6px;
+            height: 6px;
+
+            background: var(--orange);
+
+            border-radius: 50%;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff5215,
+                    #ff7924
+                );
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .user-info strong {
+            display: block;
+
+            font-size: 11px;
+        }
+
+        .user-info span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #949794;
+
+            font-size: 9px;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            position: fixed;
+
+            top: var(--topbar-height);
+            left: var(--sidebar-width);
+            right: 0;
+            bottom: 0;
+
+            overflow: auto;
+
+            background: #090d0a;
+        }
+
+        .content {
+            width: calc(100% - 48px);
+            max-width: 1370px;
+
+            margin: 0 auto;
+
+            padding: 23px 0;
+        }
+
+
+        /* cabeçalho */
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+        }
+
+        .page-header h1 {
+            font-size: 23px;
+
+            font-weight: 750;
+
+            letter-spacing: -0.6px;
+        }
+
+        .page-header p {
+            margin-top: 6px;
+
+            color: #969996;
+
+            font-size: 11px;
+        }
+
+        .export-button {
+            height: 40px;
+
+            padding: 0 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            color: white;
+
+            background: #161716;
+
+            border: 1px solid #303230;
+            border-radius: 9px;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .export-button:hover {
+            border-color: #d44d26;
+        }
+
+        .export-button svg {
+            width: 16px;
+        }
+
+
+        /* =========================
+           FILTROS
+        ========================= */
+
+        .filter-area {
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 14px;
+        }
+
+        .table-search {
+            height: 39px;
+
+            flex: 1;
+
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 0 12px;
+
+            background: #292b29;
+
+            border: 1px solid transparent;
+            border-radius: 8px;
+        }
+
+        .table-search:focus-within {
+            border-color: #d85025;
+        }
+
+        .table-search svg {
+            width: 17px;
+
+            color: #9ca09c;
+        }
+
+        .table-search input {
+            width: 100%;
+
+            background: transparent;
+
+            border: none;
+            outline: none;
+
+            color: white;
+
+            font-size: 12px;
+        }
+
+        .table-search input::placeholder {
+            color: #979a97;
+        }
+
+        .filter-settings {
+            width: 28px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #8d908d;
+
+            border: none;
+
+            background: transparent;
+        }
+
+        .filter-settings svg {
+            width: 18px;
+        }
+
+        .status-filters {
+            display: flex;
+            align-items: center;
+
+            gap: 6px;
+        }
+
+        .filter-button {
+            height: 30px;
+
+            padding: 0 13px;
+
+            color: #b1b4b1;
+
+            background: #151715;
+
+            border: 1px solid #303230;
+            border-radius: 999px;
+
+            font-size: 10px;
+        }
+
+        .filter-button:hover {
+            color: white;
+        }
+
+        .filter-button.active {
+            color: #ff6937;
+
+            background: #28140f;
+
+            border-color: #cf4924;
+        }
+
+
+        /* =========================
+           TABELA
+        ========================= */
+
+        .table-container {
+            width: 100%;
+
+            background: var(--panel);
+
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
+            overflow: hidden;
+        }
+
+        .table-scroll {
+            width: 100%;
+
+            height: calc(100vh - 228px);
+
+            min-height: 420px;
+
+            overflow: auto;
+        }
+
+        .table-scroll::-webkit-scrollbar {
+            width: 9px;
+            height: 9px;
+        }
+
+        .table-scroll::-webkit-scrollbar-track {
+            background: #121412;
+        }
+
+        .table-scroll::-webkit-scrollbar-thumb {
+            background: #414341;
+
+            border-radius: 999px;
+        }
+
+        table {
+            width: 100%;
+
+            min-width: 1390px;
+
+            border-collapse: collapse;
+        }
+
+        thead {
+            position: sticky;
+
+            top: 0;
+
+            z-index: 5;
+        }
+
+        thead tr {
+            background: #292b29;
+        }
+
+        th {
+            height: 42px;
+
+            padding: 0 10px;
+
+            color: #f0f0f0;
+
+            text-align: left;
+
+            white-space: nowrap;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .sort {
+            margin-left: 3px;
+
+            color: #696d69;
+
+            font-size: 9px;
+        }
+
+        .sort.active {
+            color: var(--orange);
+        }
+
+        tbody tr {
+            height: 42px;
+
+            background: #161716;
+
+            border-bottom: 1px solid #242624;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #1a1c1a;
+        }
+
+        tbody tr:hover {
+            background: #242624;
+
+            cursor: pointer;
+        }
+
+        td {
+            padding: 0 10px;
+
+            color: #e4e5e4;
+
+            white-space: nowrap;
+
+            font-size: 10px;
+        }
+
+        .operation-id {
+            color: #ff5729;
+
+            font-family: "JetBrains Mono", monospace;
+            font-weight: 700;
+        }
+
+        .operation-date {
+            color: #a9ada9;
+        }
+
+        .operation-plate,
+        .operation-rfid,
+        .weight,
+        .difference {
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        .operation-plate {
+            color: #f3f3f3;
+
+            font-weight: 600;
+        }
+
+        .operation-driver {
+            color: #eeeeee;
+        }
+
+        .operation-rfid {
+            color: #a0a4a0;
+        }
+
+        .weight {
+            color: #eeeeee;
+
+            font-weight: 600;
+        }
+
+        .weight.expected {
+            color: #9da19d;
+
+            font-weight: 400;
+        }
+
+        .difference {
+            font-weight: 700;
+        }
+
+        .diff-ok {
+            color: #2bd86f;
+        }
+
+        .diff-warning {
+            color: #ffd337;
+        }
+
+        .diff-danger {
+            color: #ff2949;
+        }
+
+
+        /* status */
+
+        .status {
+            height: 21px;
+
+            display: inline-flex;
+            align-items: center;
+
+            gap: 6px;
+
+            padding: 0 9px;
+
+            border: 1px solid;
+            border-radius: 999px;
+
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .status::before {
+            content: "";
+
+            width: 5px;
+            height: 5px;
+
+            border-radius: 50%;
+        }
+
+        .status-normal {
+            color: #35dd75;
+
+            background: #10371f;
+
+            border-color: #205f38;
+        }
+
+        .status-normal::before {
+            background: #35dd75;
+        }
+
+        .status-atencao {
+            color: #ffd43d;
+
+            background: #382f10;
+
+            border-color: #66571d;
+        }
+
+        .status-atencao::before {
+            background: #ffd43d;
+        }
+
+        .status-critico {
+            color: #ff3653;
+
+            background: #3d111b;
+
+            border-color: #66222d;
+        }
+
+        .status-critico::before {
+            background: #ff2949;
+        }
+
+        .status-analise {
+            color: #ff6b36;
+
+            background: #3d1d12;
+
+            border-color: #70321f;
+        }
+
+        .status-analise::before {
+            background: #ff642f;
+        }
+
+        .alert {
+            color: #a6aaa6;
+        }
+
+        .table-footer {
+            min-height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 13px;
+
+            color: #919591;
+
+            background: #151615;
+
+            border-top: 1px solid #252625;
+
+            font-size: 9px;
+        }
+
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal-background {
+            position: fixed;
+
+            inset: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background: rgba(0, 0, 0, 0.72);
+
+            z-index: 1000;
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition: 0.2s;
+        }
+
+        .modal-background.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            width: 650px;
+            max-width: 100%;
+
+            padding: 23px;
+
+            background: #191b19;
+
+            border: 1px solid #383a38;
+            border-radius: 14px;
+
+            box-shadow:
+                0 35px 90px
+                rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            padding-bottom: 18px;
+
+            border-bottom: 1px solid #303230;
+        }
+
+        .modal-top small {
+            color: #949894;
+
+            font-size: 8px;
+            letter-spacing: 1.4px;
+        }
+
+        .modal-top h2 {
+            margin-top: 6px;
+
+            color: var(--orange);
+
+            font-family: "JetBrains Mono", monospace;
+
+            font-size: 21px;
+        }
+
+        .modal-top button {
+            width: 33px;
+            height: 33px;
+
+            color: #b3b6b3;
+
+            background: #242624;
+
+            border: 1px solid #343634;
+            border-radius: 8px;
+
+            font-size: 21px;
+        }
+
+        .modal-content {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+        .modal-field {
+            padding: 13px;
+
+            background: #202220;
+
+            border: 1px solid #303230;
+            border-radius: 8px;
+        }
+
+        .modal-field small {
+            display: block;
+
+            color: #858985;
+
+            font-size: 8px;
+            letter-spacing: 0.8px;
+
+            text-transform: uppercase;
+        }
+
+        .modal-field strong {
+            display: block;
+
+            margin-top: 7px;
+
+            color: #ededed;
+
+            font-size: 11px;
+        }
+
+
+        /* responsivo */
+
+        @media (max-width: 1000px) {
+
+            :root {
+                --sidebar-width: 205px;
+            }
+
+            .top-search {
+                width: 320px;
+            }
+
+            .status-filters {
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 760px) {
+
+            :root {
+                --sidebar-width: 66px;
+            }
+
+            .logo-text,
+            .sidebar-item span:not(.notification-count),
+            .esp-status,
+            .user-info,
+            .system-online {
+                display: none;
+            }
+
+            .logo-area {
+                justify-content: center;
+
+                padding: 0;
+            }
+
+            .sidebar-item {
+                justify-content: center;
+
+                padding: 0;
+            }
+
+            .notification-count {
+                position: absolute;
+
+                right: 2px;
+                top: 2px;
+
+                width: 17px;
+                height: 17px;
+
+                font-size: 8px;
+            }
+
+            .top-search {
+                width: 48vw;
+            }
+
+            .content {
+                width: calc(100% - 24px);
+            }
+
+            .filter-area {
+                flex-wrap: wrap;
+            }
+
+            .table-search {
+                flex-basis: calc(100% - 40px);
+            }
+
+            .status-filters {
+                width: 100%;
+            }
+
+            .modal-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo-area">
+
+            <div class="logo-symbol">
+                <span>S</span>
+            </div>
+
+            <div class="logo-text">
+
+                <div class="logo-name">
+                    LOAD<span>SENSE</span>
+                </div>
+
+                <div class="logo-subtitle">
+                    SUA LOGÍSTICA EM TEMPO<br>
+                    REAL
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <a href="#" class="sidebar-item">
+
+                <svg viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="6" height="6"></rect>
+                    <rect x="15" y="3" width="6" height="6"></rect>
+                    <rect x="3" y="15" width="6" height="6"></rect>
+                    <rect x="15" y="15" width="6" height="6"></rect>
+                </svg>
+
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="#" class="sidebar-item active">
+
+                <svg viewBox="0 0 24 24">
+                    <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                    <path d="M3 9h18"></path>
+                    <path d="M9 4v16"></path>
+                </svg>
+
+                <span>Planilha Operacional</span>
+
+            </a>
+
+
+            <a href="#" class="sidebar-item">
+
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M12 8v8"></path>
+                    <path d="M8 12h8"></path>
+                </svg>
+
+                <span>Nova Pesagem</span>
+
+            </a>
+
+
+            <a href="#" class="sidebar-item">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                    <path d="M10 21h4"></path>
+                </svg>
+
+                <span>Alertas</span>
+
+                <span class="notification-count">
+                    12
+                </span>
+
+            </a>
+
+
+            <a href="#" class="sidebar-item">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 3h9l4 4v14H6z"></path>
+                    <path d="M15 3v5h5"></path>
+                    <path d="M9 17v-4"></path>
+                    <path d="M12 17v-7"></path>
+                    <path d="M15 17v-2"></path>
+                </svg>
+
+                <span>Relatórios</span>
+
+            </a>
+
+
+            <a href="#" class="sidebar-item">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 12a8 8 0 1 0 2.4-5.7"></path>
+                    <path d="M4 4v6h6"></path>
+                    <path d="M12 8v5l3 2"></path>
+                </svg>
+
+                <span>Histórico</span>
+
+            </a>
+
+
+            <a href="#" class="sidebar-item">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="m12 3 1.4 4.6L18 9l-4.6 1.4L12 15l-1.4-4.6L6 9l4.6-1.4z"></path>
+                </svg>
+
+                <span>IA LoadSense</span>
+
+            </a>
+
+
+            <a href="#" class="sidebar-item">
+
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 2v3"></path>
+                    <path d="M12 19v3"></path>
+                    <path d="M2 12h3"></path>
+                    <path d="M19 12h3"></path>
+                    <path d="m4.9 4.9 2.1 2.1"></path>
+                    <path d="m17 17 2.1 2.1"></path>
+                    <path d="m19.1 4.9-2.1 2.1"></path>
+                    <path d="m7 17-2.1 2.1"></path>
+                </svg>
+
+                <span>Configurações</span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="esp-status">
+
+            <div class="esp-title">
+
+                <span class="green-dot"></span>
+
+                ESP32 conectado
+
+            </div>
+
+            <div class="esp-description">
+                HX711 · 80 SPS · estável
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+         TOPBAR
+    ========================= -->
+
+    <header class="topbar">
+
+        <div class="top-search">
+
+            <svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-4-4"></path>
+            </svg>
+
+            <input
+                type="text"
+                id="topSearch"
+                placeholder="Buscar operação, placa, motorista..."
+            >
+
+        </div>
+
+
+        <div class="topbar-right">
+
+            <div class="system-online">
+
+                <span></span>
+
+                Sistema online
+
+            </div>
+
+
+            <button class="bell-button">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                    <path d="M10 21h4"></path>
+                </svg>
+
+                <span class="bell-dot"></span>
+
+            </button>
+
+
+            <div class="user">
+
+                <div class="user-avatar">
+                    RA
+                </div>
+
+                <div class="user-info">
+
+                    <strong>
+                        Renato Admin
+                    </strong>
+
+                    <span>
+                        Administrador
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         CONTEÚDO
+    ========================= -->
+
+    <main class="main">
+
+        <div class="content">
+
+            <div class="page-header">
+
+                <div>
+
+                    <h1>
+                        Planilha Operacional
+                    </h1>
+
+                    <p>
+                        Central de dados recebidos do hardware ESP32/HX711 — comparação automática de pesos
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="export-button"
+                    id="exportButton"
+                >
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 3v12"></path>
+                        <path d="m7 10 5 5 5-5"></path>
+                        <path d="M5 21h14"></path>
+                    </svg>
+
+                    Exportar
+
+                </button>
+
+            </div>
+
+
+
+            <!-- filtros -->
+
+            <div class="filter-area">
+
+                <div class="table-search">
+
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <path d="m20 20-4-4"></path>
+                    </svg>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Buscar por ID, placa, motorista, RFID..."
+                    >
+
+                </div>
+
+
+                <button class="filter-settings">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 7h8"></path>
+                        <path d="M16 7h4"></path>
+                        <circle cx="14" cy="7" r="2"></circle>
+
+                        <path d="M4 17h4"></path>
+                        <path d="M12 17h8"></path>
+                        <circle cx="10" cy="17" r="2"></circle>
+                    </svg>
+
+                </button>
+
+
+                <div class="status-filters">
+
+                    <button
+                        class="filter-button active"
+                        data-status="todos"
+                    >
+                        Todos
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-status="normal"
+                    >
+                        Normal
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-status="atencao"
+                    >
+                        Atenção
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-status="critico"
+                    >
+                        Crítico
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-status="analise"
+                    >
+                        Análise
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- tabela -->
+
+            <section class="table-container">
+
+                <div class="table-scroll">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th data-column="id">
+                                    ID
+                                    <span class="sort active">⇅</span>
+                                </th>
+
+                                <th data-column="data">
+                                    Data/Hora
+                                    <span class="sort">⇅</span>
+                                </th>
+
+                                <th data-column="placa">
+                                    Placa
+                                    <span class="sort">⇅</span>
+                                </th>
+
+                                <th data-column="motorista">
+                                    Motorista
+                                    <span class="sort">⇅</span>
+                                </th>
+
+                                <th data-column="rfid">
+                                    RFID
+                                    <span class="sort">⇅</span>
+                                </th>
+
+                                <th data-column="vazio">
+                                    Vazio (kg)
+                                    <span class="sort">⇅</span>
+                                </th>
+
+                                <th data-column="carga">
+                                    Carga (kg)
+                                    <span class="sort">⇅</span>
+                                </th>
+
+                                <th data-column="esperado">
+                                    Esperado (kg)
+                                    <span class="sort">⇅</span>
+                                </th>
+
+                                <th data-column="real">
+                                    Real (kg)
+                                    <span class="sort">⇅</span>
+                                </th>
+
+                                <th data-column="diferenca">
+                                    Dif. kg
+                                    <span class="sort">⇅</span>
+                                </th>
+
+                                <th data-column="percentual">
+                                    Dif. %
+                                    <span class="sort">⇅</span>
+                                </th>
+
+                                <th data-column="status">
+                                    Status
+                                    <span class="sort">⇅</span>
+                                </th>
+
+                                <th data-column="alerta">
+                                    Alerta
+                                    <span class="sort">⇅</span>
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="tableBody"></tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="table-footer">
+
+                    <span id="operationCounter">
+                        28 operações exibidas
+                    </span>
+
+                    <span>
+                        Clique em uma linha para ver detalhes
+                    </span>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- modal -->
+
+    <div
+        class="modal-background"
+        id="modalBackground"
+    >
+
+        <div class="modal">
+
+            <div class="modal-top">
+
+                <div>
+
+                    <small>
+                        DETALHES DA OPERAÇÃO
+                    </small>
+
+                    <h2 id="modalId">
+                        OP-2453
+                    </h2>
+
+                </div>
+
+
+                <button id="closeModal">
+                    ×
+                </button>
+
+            </div>
+
+
+            <div
+                class="modal-content"
+                id="modalContent"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        /* =============================
+           DADOS
+        ============================== */
+
+        const baseOperations = [
+
+            {
+                id: "OP-2453",
+                data: "07/06, 15:51",
+                placa: "RTY2U10",
+                motorista: "Júlia Castro",
+                rfid: "RF-19513",
+                vazio: 14748,
+                carga: 8265,
+                esperado: 23013,
+                real: 22943,
+                diferenca: -70,
+                percentual: -0.30,
+                status: "normal",
+                alerta: "Sem alerta"
+            },
+
+            {
+                id: "OP-2454",
+                data: "08/06, 14:38",
+                placa: "JKL7M89",
+                motorista: "Roberto Lima",
+                rfid: "RF-1948A",
+                vazio: 12121,
+                carga: 23784,
+                esperado: 35905,
+                real: 35733,
+                diferenca: -172,
+                percentual: -0.48,
+                status: "normal",
+                alerta: "Sem alerta"
+            },
+
+            {
+                id: "OP-2455",
+                data: "08/06, 13:25",
+                placa: "QWE4R56",
+                motorista: "Ana Souza",
+                rfid: "RF-19401",
+                vazio: 13696,
+                carga: 14633,
+                esperado: 28329,
+                real: 26993,
+                diferenca: -1336,
+                percentual: -4.72,
+                status: "critico",
+                alerta: "Possível falta de carga"
+            },
+
+            {
+                id: "OP-2456",
+                data: "08/06, 12:12",
+                placa: "ABC1D23",
+                motorista: "Carlos Mendes",
+                rfid: "RF-19378",
+                vazio: 12828,
+                carga: 19740,
+                esperado: 32568,
+                real: 32767,
+                diferenca: 199,
+                percentual: 0.61,
+                status: "normal",
+                alerta: "Sem alerta"
+            },
+
+            {
+                id: "OP-2457",
+                data: "09/06, 11:59",
+                placa: "FGH9J21",
+                motorista: "Bruno Teixeira",
+                rfid: "RF-192EF",
+                vazio: 13990,
+                carga: 12121,
+                esperado: 26111,
+                real: 27162,
+                diferenca: 1051,
+                percentual: 4.03,
+                status: "critico",
+                alerta: "Excesso de peso crítico"
+            },
+
+            {
+                id: "OP-2458",
+                data: "09/06, 10:46",
+                placa: "BNM5K32",
+                motorista: "Patrícia Alves",
+                rfid: "RF-19266",
+                vazio: 13800,
+                carga: 15766,
+                esperado: 29566,
+                real: 29622,
+                diferenca: 56,
+                percentual: 0.19,
+                status: "normal",
+                alerta: "Sem alerta"
+            },
+
+            {
+                id: "OP-2459",
+                data: "09/06, 09:33",
+                placa: "ZXC8V67",
+                motorista: "Felipe Rocha",
+                rfid: "RF-191DD",
+                vazio: 15528,
+                carga: 11956,
+                esperado: 27484,
+                real: 27474,
+                diferenca: -10,
+                percentual: -0.04,
+                status: "normal",
+                alerta: "Sem alerta"
+            },
+
+            {
+                id: "OP-2460",
+                data: "10/06, 08:20",
+                placa: "PLM3N45",
+                motorista: "Marcos Dias",
+                rfid: "RF-19154",
+                vazio: 12497,
+                carga: 9451,
+                esperado: 21948,
+                real: 22019,
+                diferenca: 71,
+                percentual: 0.32,
+                status: "normal",
+                alerta: "Sem alerta"
+            },
+
+            {
+                id: "OP-2461",
+                data: "10/06, 17:07",
+                placa: "RTY2U10",
+                motorista: "Júlia Castro",
+                rfid: "RF-190CB",
+                vazio: 15961,
+                carga: 13194,
+                esperado: 29155,
+                real: 29099,
+                diferenca: -56,
+                percentual: -0.19,
+                status: "normal",
+                alerta: "Sem alerta"
+            },
+
+            {
+                id: "OP-2462",
+                data: "10/06, 16:54",
+                placa: "JKL7M89",
+                motorista: "Roberto Lima",
+                rfid: "RF-19042",
+                vazio: 12912,
+                carga: 15190,
+                esperado: 28102,
+                real: 28086,
+                diferenca: -16,
+                percentual: -0.06,
+                status: "normal",
+                alerta: "Sem alerta"
+            },
+
+            {
+                id: "OP-2463",
+                data: "11/06, 15:41",
+                placa: "QWE4R56",
+                motorista: "Ana Souza",
+                rfid: "RF-18FB9",
+                vazio: 12201,
+                carga: 11590,
+                esperado: 23791,
+                real: 22817,
+                diferenca: -974,
+                percentual: -4.09,
+                status: "critico",
+                alerta: "Possível falta de carga"
+            },
+
+            {
+                id: "OP-2464",
+                data: "11/06, 14:28",
+                placa: "ABC1D23",
+                motorista: "Carlos Mendes",
+                rfid: "RF-18F30",
+                vazio: 14874,
+                carga: 20104,
+                esperado: 34978,
+                real: 34818,
+                diferenca: -160,
+                percentual: -0.46,
+                status: "normal",
+                alerta: "Sem alerta"
+            },
+
+            {
+                id: "OP-2465",
+                data: "11/06, 13:15",
+                placa: "FGH9J21",
+                motorista: "Bruno Teixeira",
+                rfid: "RF-18EA7",
+                vazio: 14029,
+                carga: 11982,
+                esperado: 26011,
+                real: 26040,
+                diferenca: 29,
+                percentual: 0.11,
+                status: "normal",
+                alerta: "Sem alerta"
+            },
+
+            {
+                id: "OP-2466",
+                data: "12/06, 12:04",
+                placa: "BNM5K32",
+                motorista: "Patrícia Alves",
+                rfid: "RF-18E20",
+                vazio: 13540,
+                carga: 16111,
+                esperado: 29651,
+                real: 30368,
+                diferenca: 717,
+                percentual: 2.42,
+                status: "atencao",
+                alerta: "Peso acima do esperado"
+            }
+
+        ];
+
+
+        const operations = [];
+
+        for (let i = 0; i < 28; i++) {
+
+            const base =
+                baseOperations[
+                    i % baseOperations.length
+                ];
+
+            const copy = {
+                ...base
+            };
+
+            copy.id =
+                "OP-" + (2453 + i);
+
+            if (i === 27) {
+
+                copy.id =
+                    "OP-2480";
+
+                copy.placa =
+                    "ABC1D23";
+
+                copy.motorista =
+                    "Carlos Mendes";
+
+                copy.status =
+                    "analise";
+
+                copy.diferenca =
+                    -1472;
+
+                copy.percentual =
+                    -4.29;
+
+                copy.alerta =
+                    "Possível falta de carga";
+
+                copy.vazio =
+                    13712;
+
+                copy.carga =
+                    20635;
+
+                copy.esperado =
+                    34347;
+
+                copy.real =
+                    32875;
+
+            }
+
+            operations.push(copy);
+
+        }
+
+
+
+        /* =============================
+           ESTADO
+        ============================== */
+
+        let activeStatus =
+            "todos";
+
+        let searchText =
+            "";
+
+        let sortColumn =
+            "id";
+
+        let sortDirection =
+            "asc";
+
+
+
+        const tableBody =
+            document.getElementById(
+                "tableBody"
+            );
+
+        const searchInput =
+            document.getElementById(
+                "searchInput"
+            );
+
+        const topSearch =
+            document.getElementById(
+                "topSearch"
+            );
+
+        const operationCounter =
+            document.getElementById(
+                "operationCounter"
+            );
+
+
+
+        /* =============================
+           FUNÇÕES
+        ============================== */
+
+        function formatNumber(value) {
+
+            return Number(value)
+                .toLocaleString(
+                    "pt-BR"
+                );
+
+        }
+
+
+        function formatDifference(value) {
+
+            const sign =
+                value > 0
+                    ? "+"
+                    : "";
+
+            return (
+                sign +
+                formatNumber(value)
+            );
+
+        }
+
+
+        function formatPercentage(value) {
+
+            const sign =
+                value > 0
+                    ? "+"
+                    : "";
+
+            return (
+                sign +
+                Number(value)
+                    .toFixed(2)
+                    .replace(".", ",")
+                +
+                "%"
+            );
+
+        }
+
+
+        function statusText(status) {
+
+            const names = {
+
+                normal:
+                    "Normal",
+
+                atencao:
+                    "Atenção",
+
+                critico:
+                    "Crítico",
+
+                analise:
+                    "Análise"
+
+            };
+
+            return names[status];
+
+        }
+
+
+        function diffClass(operation) {
+
+            const value =
+                Math.abs(
+                    operation.percentual
+                );
+
+
+            if (value < 1) {
+
+                return "diff-ok";
+
+            }
+
+
+            if (
+                operation.percentual > 0
+            ) {
+
+                return "diff-warning";
+
+            }
+
+
+            return "diff-danger";
+
+        }
+
+
+
+        function getVisibleOperations() {
+
+            let result =
+                [...operations];
+
+
+            if (
+                activeStatus !==
+                "todos"
+            ) {
+
+                result =
+                    result.filter(
+                        operation =>
+                            operation.status ===
+                            activeStatus
+                    );
+
+            }
+
+
+            if (
+                searchText
+            ) {
+
+                const value =
+                    searchText
+                        .toLowerCase()
+                        .trim();
+
+
+                result =
+                    result.filter(
+                        operation => {
+
+                            const searchable = `
+
+                                ${operation.id}
+                                ${operation.data}
+                                ${operation.placa}
+                                ${operation.motorista}
+                                ${operation.rfid}
+                                ${operation.alerta}
+                                ${statusText(operation.status)}
+
+                            `
+                            .toLowerCase();
+
+
+                            return searchable
+                                .includes(value);
+
+                        }
+                    );
+
+            }
+
+
+            result.sort(
+                (a, b) => {
+
+                    let first =
+                        a[sortColumn];
+
+                    let second =
+                        b[sortColumn];
+
+
+                    if (
+                        typeof first ===
+                        "string"
+                    ) {
+
+                        first =
+                            first.toLowerCase();
+
+                        second =
+                            second.toLowerCase();
+
+                    }
+
+
+                    if (first < second) {
+
+                        return sortDirection === "asc"
+                            ? -1
+                            : 1;
+
+                    }
+
+
+                    if (first > second) {
+
+                        return sortDirection === "asc"
+                            ? 1
+                            : -1;
+
+                    }
+
+
+                    return 0;
+
+                }
+            );
+
+
+            return result;
+
+        }
+
+
+
+        function renderTable() {
+
+            const visible =
+                getVisibleOperations();
+
+
+            tableBody.innerHTML =
+                "";
+
+
+            visible.forEach(
+                operation => {
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    const differenceClass =
+                        diffClass(operation);
+
+
+                    row.innerHTML = `
+
+                        <td class="operation-id">
+                            ${operation.id}
+                        </td>
+
+                        <td class="operation-date">
+                            ${operation.data}
+                        </td>
+
+                        <td class="operation-plate">
+                            ${operation.placa}
+                        </td>
+
+                        <td class="operation-driver">
+                            ${operation.motorista}
+                        </td>
+
+                        <td class="operation-rfid">
+                            ${operation.rfid}
+                        </td>
+
+                        <td class="weight">
+                            ${formatNumber(operation.vazio)}
+                        </td>
+
+                        <td class="weight">
+                            ${formatNumber(operation.carga)}
+                        </td>
+
+                        <td class="weight expected">
+                            ${formatNumber(operation.esperado)}
+                        </td>
+
+                        <td class="weight">
+                            ${formatNumber(operation.real)}
+                        </td>
+
+                        <td class="difference ${differenceClass}">
+                            ${formatDifference(operation.diferenca)}
+                        </td>
+
+                        <td class="difference ${differenceClass}">
+                            ${formatPercentage(operation.percentual)}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="
+                                    status
+                                    status-${operation.status}
+                                "
+                            >
+
+                                ${statusText(operation.status)}
+
+                            </span>
+
+                        </td>
+
+                        <td class="alert">
+                            ${operation.alerta}
+                        </td>
+
+                    `;
+
+
+                    row.addEventListener(
+                        "click",
+                        function () {
+
+                            openModal(
+                                operation
+                            );
+
+                        }
+                    );
+
+
+                    tableBody.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+
+            operationCounter.textContent =
+                visible.length === 1
+                    ? "1 operação exibida"
+                    : `${visible.length} operações exibidas`;
+
+        }
+
+
+
+        /* =============================
+           BUSCA
+        ============================== */
+
+        searchInput.addEventListener(
+            "input",
+            function () {
+
+                searchText =
+                    this.value;
+
+                topSearch.value =
+                    this.value;
+
+                renderTable();
+
+            }
+        );
+
+
+        topSearch.addEventListener(
+            "input",
+            function () {
+
+                searchText =
+                    this.value;
+
+                searchInput.value =
+                    this.value;
+
+                renderTable();
+
+            }
+        );
+
+
+
+        /* =============================
+           FILTROS
+        ============================== */
+
+        document
+            .querySelectorAll(
+                ".filter-button"
+            )
+            .forEach(
+                button => {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            document
+                                .querySelectorAll(
+                                    ".filter-button"
+                                )
+                                .forEach(
+                                    item =>
+                                        item.classList
+                                            .remove("active")
+                                );
+
+
+                            this.classList
+                                .add("active");
+
+
+                            activeStatus =
+                                this.dataset.status;
+
+
+                            renderTable();
+
+                        }
+                    );
+
+                }
+            );
+
+
+
+        /* =============================
+           ORDENAÇÃO
+        ============================== */
+
+        document
+            .querySelectorAll(
+                "th[data-column]"
+            )
+            .forEach(
+                header => {
+
+                    header.addEventListener(
+                        "click",
+                        function () {
+
+                            const column =
+                                this.dataset.column;
+
+
+                            if (
+                                sortColumn ===
+                                column
+                            ) {
+
+                                sortDirection =
+                                    sortDirection === "asc"
+                                        ? "desc"
+                                        : "asc";
+
+                            }
+
+                            else {
+
+                                sortColumn =
+                                    column;
+
+                                sortDirection =
+                                    "asc";
+
+                            }
+
+
+                            document
+                                .querySelectorAll(
+                                    ".sort"
+                                )
+                                .forEach(
+                                    sort =>
+                                        sort.classList
+                                            .remove("active")
+                                );
+
+
+                            this
+                                .querySelector(".sort")
+                                ?.classList
+                                .add("active");
+
+
+                            renderTable();
+
+                        }
+                    );
+
+                }
+            );
+
+
+
+        /* =============================
+           MODAL
+        ============================== */
+
+        const modalBackground =
+            document.getElementById(
+                "modalBackground"
+            );
+
+        const modalId =
+            document.getElementById(
+                "modalId"
+            );
+
+        const modalContent =
+            document.getElementById(
+                "modalContent"
+            );
+
+
+        function openModal(operation) {
+
+            modalId.textContent =
+                operation.id;
+
+
+            const fields = [
+
+                [
+                    "Data/Hora",
+                    operation.data
+                ],
+
+                [
+                    "Placa",
+                    operation.placa
+                ],
+
+                [
+                    "Motorista",
+                    operation.motorista
+                ],
+
+                [
+                    "RFID",
+                    operation.rfid
+                ],
+
+                [
+                    "Peso vazio",
+                    formatNumber(
+                        operation.vazio
+                    ) + " kg"
+                ],
+
+                [
+                    "Carga",
+                    formatNumber(
+                        operation.carga
+                    ) + " kg"
+                ],
+
+                [
+                    "Esperado",
+                    formatNumber(
+                        operation.esperado
+                    ) + " kg"
+                ],
+
+                [
+                    "Real",
+                    formatNumber(
+                        operation.real
+                    ) + " kg"
+                ],
+
+                [
+                    "Diferença",
+                    formatDifference(
+                        operation.diferenca
+                    ) + " kg"
+                ],
+
+                [
+                    "Diferença %",
+                    formatPercentage(
+                        operation.percentual
+                    )
+                ],
+
+                [
+                    "Status",
+                    statusText(
+                        operation.status
+                    )
+                ],
+
+                [
+                    "Alerta",
+                    operation.alerta
+                ]
+
+            ];
+
+
+            modalContent.innerHTML =
+                fields
+                    .map(
+                        field => `
+
+                            <div class="modal-field">
+
+                                <small>
+                                    ${field[0]}
+                                </small>
+
+                                <strong>
+                                    ${field[1]}
+                                </strong>
+
+                            </div>
+
+                        `
+                    )
+                    .join("");
+
+
+            modalBackground.classList
+                .add("show");
+
+        }
+
+
+        function closeModal() {
+
+            modalBackground.classList
+                .remove("show");
+
+        }
+
+
+        document
+            .getElementById(
+                "closeModal"
+            )
+            .addEventListener(
+                "click",
+                closeModal
+            );
+
+
+        modalBackground.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target ===
+                    modalBackground
+                ) {
+
+                    closeModal();
+
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key ===
+                    "Escape"
+                ) {
+
+                    closeModal();
+
+                }
+
+            }
+        );
+
+
+
+        /* =============================
+           EXPORTAR CSV
+        ============================== */
+
+        document
+            .getElementById(
+                "exportButton"
+            )
+            .addEventListener(
+                "click",
+                function () {
+
+                    const visible =
+                        getVisibleOperations();
+
+
+                    const header = [
+
+                        "ID",
+                        "Data/Hora",
+                        "Placa",
+                        "Motorista",
+                        "RFID",
+                        "Vazio (kg)",
+                        "Carga (kg)",
+                        "Esperado (kg)",
+                        "Real (kg)",
+                        "Dif. kg",
+                        "Dif. %",
+                        "Status",
+                        "Alerta"
+
+                    ];
+
+
+                    const rows =
+                        visible.map(
+                            operation => [
+
+                                operation.id,
+                                operation.data,
+                                operation.placa,
+                                operation.motorista,
+                                operation.rfid,
+                                operation.vazio,
+                                operation.carga,
+                                operation.esperado,
+                                operation.real,
+                                operation.diferenca,
+                                operation.percentual,
+                                statusText(
+                                    operation.status
+                                ),
+                                operation.alerta
+
+                            ]
+                        );
+
+
+                    const csv =
+                        [
+                            header,
+                            ...rows
+                        ]
+                        .map(
+                            row =>
+                                row
+                                    .map(
+                                        value =>
+                                            `"${String(value)
+                                                .replace(
+                                                    /"/g,
+                                                    '""'
+                                                )
+                                            }"`
+                                    )
+                                    .join(";")
+                        )
+                        .join("\n");
+
+
+                    const blob =
+                        new Blob(
+                            [
+                                "\ufeff" + csv
+                            ],
+                            {
+                                type:
+                                    "text/csv;charset=utf-8"
+                            }
+                        );
+
+
+                    const url =
+                        URL.createObjectURL(
+                            blob
+                        );
+
+
+                    const link =
+                        document.createElement(
+                            "a"
+                        );
+
+
+                    link.href =
+                        url;
+
+
+                    link.download =
+                        "planilha-operacional-loadsense.csv";
+
+
+                    document.body
+                        .appendChild(link);
+
+
+                    link.click();
+
+
+                    link.remove();
+
+
+                    URL.revokeObjectURL(
+                        url
+                    );
+
+                }
+            );
+
+
+
+        /* =============================
+           INICIAR
+        ============================== */
+
+        renderTable();
+
+    </script>
+
+</body>
+
+</html>
