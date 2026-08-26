@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LoadSense | Alertas</title>
+
+    <link rel="stylesheet" href="Alertas.css">
+
+    <!-- Ícones -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ============================= -->
+    <!-- SIDEBAR -->
+    <!-- ============================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo-area">
+
+            <div class="logo-symbol">
+                S
+            </div>
+
+            <div class="logo-text">
+                <strong>LOAD<span>SENSE</span></strong>
+                <small>SUA LOGÍSTICA EM TEMPO<br>REAL</small>
+            </div>
+
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <a href="#" class="menu-item">
+                <i data-lucide="layout-dashboard"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i data-lucide="table-2"></i>
+                <span>Planilha Operacional</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i data-lucide="circle-plus"></i>
+                <span>Nova Pesagem</span>
+            </a>
+
+            <a href="Alertas.html" class="menu-item active">
+                <i data-lucide="bell"></i>
+                <span>Alertas</span>
+
+                <span class="notification-count">
+                    9
+                </span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i data-lucide="chart-no-axes-column"></i>
+                <span>Relatórios</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i data-lucide="history"></i>
+                <span>Histórico</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i data-lucide="sparkles"></i>
+                <span>IA LoadSense</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i data-lucide="settings"></i>
+                <span>Configurações</span>
+            </a>
+
+        </nav>
+
+        <div class="esp-status">
+
+            <div class="esp-title">
+                <span class="green-dot"></span>
+                ESP32 conectado
+            </div>
+
+            <div class="esp-description">
+                HX711 · 80 SPS · estável
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ============================= -->
+    <!-- ÁREA PRINCIPAL -->
+    <!-- ============================= -->
+
+    <div class="main-area">
+
+        <!-- HEADER -->
+
+        <header class="header">
+
+            <div class="search-box">
+
+                <i data-lucide="search"></i>
+
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="Buscar operação, placa, motorista..."
+                >
+
+            </div>
+
+            <div class="header-right">
+
+                <div class="online-status">
+                    <span></span>
+                    Sistema online
+                </div>
+
+                <button class="notification-button">
+                    <i data-lucide="bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+
+                <div class="user">
+
+                    <div class="avatar">
+                        RA
+                    </div>
+
+                    <div class="user-information">
+                        <strong>Renato Admin</strong>
+                        <span>Administrador</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTEÚDO -->
+
+        <main class="content">
+
+            <div class="page-title">
+
+                <h1>Alertas</h1>
+
+                <p>
+                    Alertas automáticos gerados pelo sistema de pesagem inteligente
+                </p>
+
+            </div>
+
+
+            <div class="alerts-container" id="alertsContainer">
+
+                <!-- Gerado pelo JavaScript -->
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- MODAL -->
+<!-- ============================= -->
+
+<div class="modal-overlay" id="modalOverlay">
+
+    <div class="operation-modal">
+
+        <button class="close-modal" id="closeModal">
+            <i data-lucide="x"></i>
+        </button>
+
+
+        <div class="modal-title-area">
+
+            <div class="modal-operation-line">
+
+                <h2 id="modalOperation">
+                    OP-2477
+                </h2>
+
+                <span id="modalLevel" class="status critical">
+                    <span></span>
+                    Crítico
+                </span>
+
+            </div>
+
+            <p id="modalDate">
+                15/06, 11:39
+            </p>
+
+        </div>
+
+
+        <!-- INFORMAÇÕES -->
+
+        <div class="modal-info-grid">
+
+
+            <div class="modal-info-card">
+
+                <div class="info-label">
+                    <i data-lucide="truck"></i>
+                    Placa
+                </div>
+
+                <strong id="modalPlate">
+                    RTY2U10
+                </strong>
+
+            </div>
+
+
+            <div class="modal-info-card">
+
+                <div class="info-label">
+                    <i data-lucide="user-round"></i>
+                    Motorista
+                </div>
+
+                <strong id="modalDriver">
+                    Júlia Castro
+                </strong>
+
+            </div>
+
+
+            <div class="modal-info-card">
+
+                <div class="info-label">
+                    <i data-lucide="radio"></i>
+                    RFID
+                </div>
+
+                <strong id="modalRFID">
+                    RF-1883B
+                </strong>
+
+            </div>
+
+
+            <div class="modal-info-card">
+
+                <div class="info-label">
+                    <i data-lucide="package"></i>
+                    Tipo de carga
+                </div>
+
+                <strong id="modalCargo">
+                    Aço
+                </strong>
+
+            </div>
+
+
+            <div class="modal-info-card">
+
+                <div class="info-label">
+                    <i data-lucide="map-pin"></i>
+                    Rota
+                </div>
+
+                <strong id="modalRoute">
+                    Cascavel → Pato Branco
+                </strong>
+
+            </div>
+
+
+            <div class="modal-info-card">
+
+                <div class="info-label">
+                    <i data-lucide="user-cog"></i>
+                    Responsável
+                </div>
+
+                <strong id="modalResponsible">
+                    Op. Camila
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- PESOS -->
+
+        <div class="weight-card">
+
+            <div class="weight-row">
+                <span>Peso caminhão vazio</span>
+
+                <strong id="modalEmptyWeight">
+                    14.977 kg
+                </strong>
+            </div>
+
+
+            <div class="weight-row">
+
+                <span>Peso da carga</span>
+
+                <strong id="modalCargoWeight">
+                    21.319 kg
+                </strong>
+
+            </div>
+
+
+            <div class="weight-row">
+
+                <span>Peso esperado</span>
+
+                <strong id="modalExpected">
+                    36.296 kg
+                </strong>
+
+            </div>
+
+
+            <div class="weight-row">
+
+                <span>Peso total real</span>
+
+                <strong id="modalReal">
+                    34.304 kg
+                </strong>
+
+            </div>
+
+
+            <div class="weight-row difference">
+
+                <span>Diferença</span>
+
+                <strong id="modalDifference">
+                    -1.992 kg (-5.49%)
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- ALERTA -->
+
+        <div class="modal-alert-box">
+
+            <strong id="modalAlertTitle">
+                Alerta: Possível falta de carga
+            </strong>
+
+            <span id="modalAlertDescription">
+                Verificar carga e lacre.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="Alertas.js"></script>
+
+</body>
+</html>
