@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login | LoadSense</title>
+
+    <link
+        rel="stylesheet"
+        href="Login.css"
+    >
+</head>
+
+<body>
+
+
+  <div class="theme-selector">
+
+    <button
+        type="button"
+        class="theme-button"
+        id="lightThemeButton"
+        title="Modo claro"
+    >
+        ☀
+        <span>Claro</span>
+    </button>
+
+    <button
+        type="button"
+        class="theme-button"
+        id="darkThemeButton"
+        title="Modo escuro"
+    >
+        ☾
+        <span>Escuro</span>
+    </button>
+
+</div>
+
+
+
+    <main class="login-page">
+
+        <section class="login-container">
+
+            <!-- LOGO -->
+            <a
+                href="Login.html"
+                class="logo"
+                aria-label="LoadSense"
+            >
+
+                <div class="logo-icon">
+
+                    <svg
+                        viewBox="0 0 48 48"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="
+                            M32.5 8
+                            H18.5
+                            C13.5 8 10.5 10.8 10.5 15
+                            C10.5 18.6 13 20.7 16.5 21.7
+                            L29 25.2
+                            C30.8 25.7 31.7 26.7 31.7 28
+                            C31.7 29.8 30.3 31 27.7 31
+                            H14
+                            L10 38
+                            H28.5
+                            C35 38 39 34.4 39 28.7
+                            C39 24.4 36.6 21.7 31.7 20.3
+                            L19.5 16.9
+                            C18 16.5 17.3 15.8 17.3 14.8
+                            C17.3 13.5 18.5 12.7 20.4 12.7
+                            H29.8
+                            Z
+                            "
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="
+                            M31 7
+                            L38 7
+                            L33 16
+                            H27
+                            Z
+                            "
+                            fill="#ff7a1a"
+                        />
+                    </svg>
+
+                </div>
+
+
+                <div class="logo-text">
+
+                    <div class="logo-name">
+                        LOAD<span>SENSE</span>
+                    </div>
+
+                    <div class="logo-subtitle">
+                        SUA LOGÍSTICA EM TEMPO REAL
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <!-- CARD -->
+            <div class="login-card">
+
+                <div class="login-header">
+
+                    <h1>
+                        Acesse a plataforma
+                    </h1>
+
+                    <p>
+                        Central de pesagem inteligente e gestão de cargas
+                    </p>
+
+                </div>
+
+
+                <form
+                    id="loginForm"
+                    novalidate
+                >
+
+                    <!-- E-MAIL -->
+                    <div class="form-group">
+
+                        <label for="email">
+                            E-mail
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <svg
+                                class="input-icon"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M4 6.5H20V17.5H4V6.5Z"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linejoin="round"
+                                />
+
+                                <path
+                                    d="M4.5 7L12 12.5L19.5 7"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="operador@loadsense.com"
+                                autocomplete="email"
+                            >
+
+                        </div>
+
+                        <small
+                            class="error-message"
+                            id="emailError"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- SENHA -->
+                    <div class="form-group password-group">
+
+                        <label for="senha">
+                            Senha
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <svg
+                                class="input-icon"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+
+                                <path
+                                    d="M7 10V8C7 5.2 9.2 3 12 3C14.8 3 17 5.2 17 8V10"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                />
+
+                                <rect
+                                    x="5"
+                                    y="10"
+                                    width="14"
+                                    height="11"
+                                    rx="2"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                            </svg>
+
+
+                            <input
+                                type="password"
+                                id="senha"
+                                name="senha"
+                                placeholder="••••••••"
+                                autocomplete="current-password"
+                            >
+
+
+                            <button
+                                type="button"
+                                class="show-password"
+                                id="showPassword"
+                                aria-label="Mostrar senha"
+                            >
+
+                                <svg
+                                    id="eyeIcon"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M2.5 12C4.6 8.5 7.8 6.5 12 6.5C16.2 6.5 19.4 8.5 21.5 12C19.4 15.5 16.2 17.5 12 17.5C7.8 17.5 4.6 15.5 2.5 12Z"
+                                        stroke="currentColor"
+                                        stroke-width="1.6"
+                                    />
+
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="2.5"
+                                        stroke="currentColor"
+                                        stroke-width="1.6"
+                                    />
+                                </svg>
+
+                            </button>
+
+                        </div>
+
+                        <small
+                            class="error-message"
+                            id="senhaError"
+                        ></small>
+
+
+                        <div class="forgot-container">
+
+                            <a
+                                href="#"
+                                id="forgotPassword"
+                                class="forgot-password"
+                            >
+                                Esqueci minha senha
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BOTÃO ENTRAR -->
+                    <button
+                        type="submit"
+                        class="login-button"
+                        id="loginButton"
+                    >
+
+                        <span>
+                            Entrar
+                        </span>
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M5 12H19"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                            />
+
+                            <path
+                                d="M14 7L19 12L14 17"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                        </svg>
+
+                    </button>
+
+
+                    <!-- CADASTRO -->
+                    <p class="register-text">
+
+                        Ainda não possui uma conta?
+
+                        <a href="Cadastro.html">
+                            Cadastre-se
+                        </a>
+
+                    </p>
+
+
+                    <!-- TERMOS -->
+                    <p class="terms">
+
+                        Ao entrar você concorda com os
+
+                        <a href="#">
+                            Termos de Uso
+                        </a>,
+
+                        <a href="#">
+                            Política de Privacidade
+                        </a>
+
+                        e
+
+                        <a href="#">
+                            Cookies.
+                        </a>
+
+                    </p>
+
+
+                    <!-- STATUS -->
+                    <div class="system-status">
+
+                        <span class="status-dot"></span>
+
+                        <span>
+                            Sistema online
+                        </span>
+
+                        <span class="separator">
+                            •
+                        </span>
+
+                        <span>
+                            Hardware ESP32/HX711 conectado
+                        </span>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="Login.js"></script>
+
+</body>
+
+</html>

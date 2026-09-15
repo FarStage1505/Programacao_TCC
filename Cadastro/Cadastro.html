@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Cadastro | LoadSense</title>
+
+
+    <style>
+
+        /* ==================================================
+           LOADSENSE
+           CADASTRO
+        ================================================== */
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        :root {
+
+            --page-bg: #070907;
+
+            --card-bg: #141614;
+
+            --card-border: #303330;
+
+            --input-bg: #252725;
+
+            --input-hover: #292b29;
+
+            --input-border: #303330;
+
+            --text-main: #ffffff;
+
+            --text-secondary: #929692;
+
+            --text-soft: #999d99;
+
+            --icon-color: #8f938f;
+
+            --theme-bg: #141614;
+
+            --checkbox-bg: #242624;
+
+            --orange: #ff4a16;
+
+            --orange-light: #ff761b;
+
+            --danger: #ff5f69;
+
+            --shadow:
+                0 20px 50px
+                rgba(0, 0, 0, 0.35);
+
+        }
+
+
+
+        /* ==================================================
+           TEMA CLARO
+        ================================================== */
+
+
+        html.light-theme {
+
+            --page-bg: #f4f6f4;
+
+            --card-bg: #ffffff;
+
+            --card-border: #d8ddd8;
+
+            --input-bg: #f1f3f1;
+
+            --input-hover: #e8ebe8;
+
+            --input-border: #d5dad5;
+
+            --text-main: #181b18;
+
+            --text-secondary: #686d68;
+
+            --text-soft: #757a75;
+
+            --icon-color: #656a65;
+
+            --theme-bg: #ffffff;
+
+            --checkbox-bg: #ffffff;
+
+            --shadow:
+                0 18px 45px
+                rgba(0, 0, 0, 0.09);
+
+        }
+
+
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: var(--page-bg);
+
+            color: var(--text-main);
+
+            transition:
+                background 0.25s ease,
+                color 0.25s ease;
+
+        }
+
+
+
+        /* ==================================================
+           PÁGINA
+        ================================================== */
+
+
+        .cadastro-page {
+
+            width: 100%;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding:
+                35px
+                20px;
+
+            background:
+
+                radial-gradient(
+                    circle at top left,
+                    rgba(255, 74, 20, 0.14),
+                    transparent 27%
+                ),
+
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(255, 74, 20, 0.09),
+                    transparent 28%
+                ),
+
+                var(--page-bg);
+
+            transition:
+                background 0.25s ease;
+
+        }
+
+
+
+        html.light-theme
+        .cadastro-page {
+
+            background:
+
+                radial-gradient(
+                    circle at top left,
+                    rgba(255, 74, 20, 0.08),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(255, 74, 20, 0.05),
+                    transparent 28%
+                ),
+
+                var(--page-bg);
+
+        }
+
+
+
+        /* ==================================================
+           SELETOR DE TEMA
+        ================================================== */
+
+
+        .theme-selector {
+
+            position: fixed;
+
+            top: 20px;
+
+            right: 25px;
+
+            z-index: 100;
+
+            display: flex;
+
+            gap: 4px;
+
+            padding: 4px;
+
+            border:
+                1px
+                solid
+                var(--card-border);
+
+            border-radius: 10px;
+
+            background: var(--theme-bg);
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+
+        }
+
+
+        .theme-button {
+
+            height: 32px;
+
+            padding:
+                0
+                12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 6px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: transparent;
+
+            color: var(--text-secondary);
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s,
+                color 0.2s;
+
+        }
+
+
+        .theme-button:hover {
+
+            color: var(--text-main);
+
+        }
+
+
+        .theme-button.active {
+
+            color: #ffffff;
+
+            background:
+
+                linear-gradient(
+                    90deg,
+                    #ff3d0d,
+                    #ff761b
+                );
+
+        }
+
+
+
+        /* ==================================================
+           CONTAINER
+        ================================================== */
+
+
+        .cadastro-container {
+
+            width: 100%;
+
+            max-width: 540px;
+
+        }
+
+
+
+        /* ==================================================
+           LOGO
+        ================================================== */
+
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: fit-content;
+
+            gap: 11px;
+
+            margin:
+                0
+                auto
+                22px;
+
+            color: var(--text-main);
+
+            text-decoration: none;
+
+        }
+
+
+        .logo-icon {
+
+            width: 50px;
+
+            height: 50px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                1px
+                solid
+                var(--card-border);
+
+            border-radius: 12px;
+
+            background: var(--card-bg);
+
+            color: var(--orange);
+
+        }
+
+
+        .logo-icon svg {
+
+            width: 37px;
+
+            height: 37px;
+
+        }
+
+
+        .logo-text {
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+        .logo-name {
+
+            font-size: 23px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.5px;
+
+            color: var(--text-main);
+
+        }
+
+
+        .logo-name span {
+
+            color: var(--orange);
+
+        }
+
+
+        .logo-subtitle {
+
+            margin-top: 5px;
+
+            font-size: 8px;
+
+            font-weight: 600;
+
+            letter-spacing: 1.4px;
+
+            color: var(--text-secondary);
+
+        }
+
+
+
+        /* ==================================================
+           CARD
+        ================================================== */
+
+
+        .cadastro-card {
+
+            width: 100%;
+
+            padding: 30px;
+
+            border:
+                1px
+                solid
+                var(--card-border);
+
+            border-radius: 14px;
+
+            background: var(--card-bg);
+
+            box-shadow: var(--shadow);
+
+            transition:
+                background 0.25s,
+                border 0.25s;
+
+        }
+
+
+
+        /* ==================================================
+           CABEÇALHO
+        ================================================== */
+
+
+        .cadastro-header {
+
+            margin-bottom: 25px;
+
+            text-align: center;
+
+        }
+
+
+        .cadastro-header h1 {
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            color: var(--text-main);
+
+        }
+
+
+        .cadastro-header p {
+
+            margin-top: 8px;
+
+            font-size: 12px;
+
+            color: var(--text-secondary);
+
+        }
+
+
+
+        /* ==================================================
+           FORMULÁRIO
+        ================================================== */
+
+
+        .form-group {
+
+            width: 100%;
+
+            margin-bottom: 17px;
+
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            color: var(--text-main);
+
+        }
+
+
+
+        /* ==================================================
+           INPUTS
+        ================================================== */
+
+
+        .input-wrapper {
+
+            position: relative;
+
+            width: 100%;
+
+        }
+
+
+        .input-wrapper input {
+
+            width: 100%;
+
+            height: 43px;
+
+            padding:
+                0
+                42px
+                0
+                40px;
+
+            border:
+                1px
+                solid
+                var(--input-border);
+
+            border-radius: 8px;
+
+            outline: none;
+
+            background: var(--input-bg);
+
+            color: var(--text-main);
+
+            font-size: 12px;
+
+            transition:
+                background 0.2s,
+                border 0.2s,
+                box-shadow 0.2s;
+
+        }
+
+
+        .input-wrapper input::placeholder {
+
+            color: var(--text-secondary);
+
+        }
+
+
+        .input-wrapper input:hover {
+
+            background: var(--input-hover);
+
+        }
+
+
+        .input-wrapper input:focus {
+
+            border-color: var(--orange);
+
+            box-shadow:
+
+                0
+                0
+                0
+                3px
+                rgba(255, 74, 22, 0.10);
+
+        }
+
+
+        .input-wrapper input.input-error {
+
+            border-color: var(--danger);
+
+        }
+
+
+
+        /* ==================================================
+           ÍCONES
+        ================================================== */
+
+
+        .input-icon {
+
+            position: absolute;
+
+            width: 18px;
+
+            height: 18px;
+
+            left: 13px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            color: var(--icon-color);
+
+            pointer-events: none;
+
+        }
+
+
+
+        /* ==================================================
+           SENHAS
+        ================================================== */
+
+
+        .password-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap: 14px;
+
+        }
+
+
+        .show-password {
+
+            position: absolute;
+
+            right: 7px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            width: 32px;
+
+            height: 32px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border: none;
+
+            border-radius: 6px;
+
+            background: transparent;
+
+            color: var(--icon-color);
+
+            cursor: pointer;
+
+        }
+
+
+        .show-password:hover {
+
+            color: var(--text-main);
+
+        }
+
+
+        .show-password svg {
+
+            width: 18px;
+
+            height: 18px;
+
+        }
+
+
+
+        /* ==================================================
+           ERROS
+        ================================================== */
+
+
+        .error-message {
+
+            display: none;
+
+            margin-top: 6px;
+
+            font-size: 10px;
+
+            color: var(--danger);
+
+        }
+
+
+        .error-message.visible {
+
+            display: block;
+
+        }
+
+
+
+        /* ==================================================
+           TERMOS
+        ================================================== */
+
+
+        .terms-checkbox {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 9px;
+
+            cursor: pointer;
+
+        }
+
+
+        .terms-checkbox input {
+
+            position: absolute;
+
+            opacity: 0;
+
+        }
+
+
+        .custom-checkbox {
+
+            width: 16px;
+
+            height: 16px;
+
+            min-width: 16px;
+
+            margin-top: 1px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                1px
+                solid
+                var(--input-border);
+
+            border-radius: 4px;
+
+            background: var(--checkbox-bg);
+
+        }
+
+
+        .terms-checkbox
+        input:checked
+        +
+        .custom-checkbox {
+
+            background: var(--orange);
+
+            border-color: var(--orange);
+
+        }
+
+
+        .terms-checkbox
+        input:checked
+        +
+        .custom-checkbox::after {
+
+            content: "✓";
+
+            color: #ffffff;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+        }
+
+
+        .terms-text {
+
+            font-size: 10px;
+
+            line-height: 1.5;
+
+            color: var(--text-secondary);
+
+        }
+
+
+        .terms-text a {
+
+            color: var(--orange);
+
+            font-weight: 600;
+
+            text-decoration: none;
+
+        }
+
+
+
+        /* ==================================================
+           BOTÃO
+        ================================================== */
+
+
+        .cadastro-button {
+
+            width: 100%;
+
+            height: 44px;
+
+            margin-top: 17px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background:
+
+                linear-gradient(
+                    90deg,
+                    #ff3d0d,
+                    #ff761b
+                );
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                filter 0.2s,
+                transform 0.2s;
+
+        }
+
+
+        .cadastro-button:hover {
+
+            filter: brightness(1.08);
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        .cadastro-button.loading {
+
+            pointer-events: none;
+
+            opacity: 0.7;
+
+        }
+
+
+
+        /* ==================================================
+           LOGIN
+        ================================================== */
+
+
+        .login-text {
+
+            margin-top: 17px;
+
+            text-align: center;
+
+            font-size: 11px;
+
+            color: var(--text-soft);
+
+        }
+
+
+        .login-text a {
+
+            margin-left: 3px;
+
+            color: var(--orange);
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+        }
+
+
+        .login-text a:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+
+        /* ==================================================
+           RESPONSIVO
+        ================================================== */
+
+
+        @media (max-width: 600px) {
+
+            .cadastro-page {
+
+                align-items: flex-start;
+
+                padding:
+                    70px
+                    16px
+                    30px;
+
+            }
+
+
+            .cadastro-card {
+
+                padding:
+                    25px
+                    20px;
+
+            }
+
+
+            .password-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 0;
+
+            }
+
+
+            .theme-selector {
+
+                top: 12px;
+
+                right: 12px;
+
+            }
+
+
+            .theme-button span {
+
+                display: none;
+
+            }
+
+
+            .theme-button {
+
+                width: 32px;
+
+                padding: 0;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================================
+         SELETOR DE TEMA
+    =========================================== -->
+
+    <div class="theme-selector">
+
+
+        <button
+            type="button"
+            class="theme-button"
+            id="lightThemeButton"
+        >
+
+            ☀
+
+            <span>
+                Claro
+            </span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="theme-button"
+            id="darkThemeButton"
+        >
+
+            ☾
+
+            <span>
+                Escuro
+            </span>
+
+        </button>
+
+
+    </div>
+
+
+
+    <main class="cadastro-page">
+
+
+        <section class="cadastro-container">
+
+
+            <!-- LOGO -->
+
+            <a
+                href="../Login/Login.html"
+                class="logo"
+            >
+
+
+                <div class="logo-icon">
+
+
+                    <svg
+                        viewBox="0 0 48 48"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+
+
+                        <path
+                            d="
+                            M32.5 8
+                            H18.5
+                            C13.5 8 10.5 10.8 10.5 15
+                            C10.5 18.6 13 20.7 16.5 21.7
+                            L29 25.2
+                            C30.8 25.7 31.7 26.7 31.7 28
+                            C31.7 29.8 30.3 31 27.7 31
+                            H14
+                            L10 38
+                            H28.5
+                            C35 38 39 34.4 39 28.7
+                            C39 24.4 36.6 21.7 31.7 20.3
+                            L19.5 16.9
+                            C18 16.5 17.3 15.8 17.3 14.8
+                            C17.3 13.5 18.5 12.7 20.4 12.7
+                            H29.8
+                            Z
+                            "
+                            fill="currentColor"
+                        />
+
+
+                        <path
+                            d="M31 7L38 7L33 16H27Z"
+                            fill="#ff7a1a"
+                        />
+
+
+                    </svg>
+
+
+                </div>
+
+
+                <div class="logo-text">
+
+
+                    <div class="logo-name">
+
+                        LOAD<span>SENSE</span>
+
+                    </div>
+
+
+                    <div class="logo-subtitle">
+
+                        SUA LOGÍSTICA EM TEMPO REAL
+
+                    </div>
+
+
+                </div>
+
+
+            </a>
+
+
+
+            <!-- CARD -->
+
+            <div class="cadastro-card">
+
+
+                <div class="cadastro-header">
+
+
+                    <h1>
+                        Crie sua conta
+                    </h1>
+
+
+                    <p>
+                        Cadastre-se para acessar a plataforma LoadSense
+                    </p>
+
+
+                </div>
+
+
+
+                <form
+                    id="cadastroForm"
+                    novalidate
+                >
+
+
+
+                    <!-- NOME -->
+
+                    <div class="form-group">
+
+
+                        <label for="nome">
+                            Nome completo
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+
+                            <svg
+                                class="input-icon"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="4"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                                <path
+                                    d="M4.5 20C5.2 16.4 8 14.5 12 14.5C16 14.5 18.8 16.4 19.5 20"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                            </svg>
+
+
+                            <input
+                                type="text"
+                                id="nome"
+                                placeholder="Digite seu nome completo"
+                                autocomplete="name"
+                            >
+
+
+                        </div>
+
+
+                        <small
+                            class="error-message"
+                            id="nomeError"
+                        ></small>
+
+
+                    </div>
+
+
+
+                    <!-- EMPRESA -->
+
+                    <div class="form-group">
+
+
+                        <label for="empresa">
+                            Empresa
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+
+                            <svg
+                                class="input-icon"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+
+                                <path
+                                    d="M4 21V7L12 3V21"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                                <path
+                                    d="M12 9L20 6V21"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                                <path
+                                    d="M2 21H22"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                            </svg>
+
+
+                            <input
+                                type="text"
+                                id="empresa"
+                                placeholder="Nome da empresa"
+                                autocomplete="organization"
+                            >
+
+
+                        </div>
+
+
+                        <small
+                            class="error-message"
+                            id="empresaError"
+                        ></small>
+
+
+                    </div>
+
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+
+                        <label for="email">
+                            E-mail
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+
+                            <svg
+                                class="input-icon"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+
+                                <rect
+                                    x="4"
+                                    y="6"
+                                    width="16"
+                                    height="12"
+                                    rx="2"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                                <path
+                                    d="M5 7L12 12.5L19 7"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                            </svg>
+
+
+                            <input
+                                type="email"
+                                id="email"
+                                placeholder="nome@empresa.com"
+                                autocomplete="email"
+                            >
+
+
+                        </div>
+
+
+                        <small
+                            class="error-message"
+                            id="emailError"
+                        ></small>
+
+
+                    </div>
+
+
+
+                    <!-- SENHAS -->
+
+                    <div class="password-grid">
+
+
+                        <div class="form-group">
+
+
+                            <label for="senha">
+                                Senha
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+
+                                <svg
+                                    class="input-icon"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+
+                                    <rect
+                                        x="5"
+                                        y="10"
+                                        width="14"
+                                        height="11"
+                                        rx="2"
+                                        stroke="currentColor"
+                                        stroke-width="1.7"
+                                    />
+
+                                    <path
+                                        d="M7 10V8C7 5.2 9.2 3 12 3C14.8 3 17 5.2 17 8V10"
+                                        stroke="currentColor"
+                                        stroke-width="1.7"
+                                    />
+
+                                </svg>
+
+
+                                <input
+                                    type="password"
+                                    id="senha"
+                                    placeholder="••••••••"
+                                    autocomplete="new-password"
+                                >
+
+
+                                <button
+                                    type="button"
+                                    class="show-password"
+                                    id="mostrarSenha"
+                                >
+
+                                    👁
+
+                                </button>
+
+
+                            </div>
+
+
+                            <small
+                                class="error-message"
+                                id="senhaError"
+                            ></small>
+
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+
+                            <label for="confirmarSenha">
+
+                                Confirmar senha
+
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+
+                                <svg
+                                    class="input-icon"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                >
+
+                                    <rect
+                                        x="5"
+                                        y="10"
+                                        width="14"
+                                        height="11"
+                                        rx="2"
+                                        stroke="currentColor"
+                                        stroke-width="1.7"
+                                    />
+
+                                    <path
+                                        d="M7 10V8C7 5.2 9.2 3 12 3C14.8 3 17 5.2 17 8V10"
+                                        stroke="currentColor"
+                                        stroke-width="1.7"
+                                    />
+
+                                </svg>
+
+
+                                <input
+                                    type="password"
+                                    id="confirmarSenha"
+                                    placeholder="••••••••"
+                                    autocomplete="new-password"
+                                >
+
+
+                                <button
+                                    type="button"
+                                    class="show-password"
+                                    id="mostrarConfirmacao"
+                                >
+
+                                    👁
+
+                                </button>
+
+
+                            </div>
+
+
+                            <small
+                                class="error-message"
+                                id="confirmarSenhaError"
+                            ></small>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- TERMOS -->
+
+                    <label class="terms-checkbox">
+
+
+                        <input
+                            type="checkbox"
+                            id="aceitarTermos"
+                        >
+
+
+                        <span
+                            class="custom-checkbox"
+                        ></span>
+
+
+                        <span class="terms-text">
+
+                            Concordo com os
+
+                            <a href="#">
+                                Termos de Uso
+                            </a>
+
+                            e a
+
+                            <a href="#">
+                                Política de Privacidade
+                            </a>
+
+                        </span>
+
+
+                    </label>
+
+
+                    <small
+                        class="error-message"
+                        id="termosError"
+                    ></small>
+
+
+
+                    <!-- BOTÃO -->
+
+                    <button
+                        type="submit"
+                        class="cadastro-button"
+                        id="cadastroButton"
+                    >
+
+                        Criar conta →
+
+                    </button>
+
+
+
+                    <p class="login-text">
+
+                        Já possui uma conta?
+
+                        <a href="../Login/Login.html">
+                            Entrar
+                        </a>
+
+                    </p>
+
+
+                </form>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <script src="Cadastro.js"></script>
+
+
+</body>
+
+</html>
