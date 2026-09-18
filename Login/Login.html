@@ -15,34 +15,35 @@
         rel="stylesheet"
         href="Login.css"
     >
+
 </head>
 
 <body>
 
 
-  <div class="theme-selector">
+    <div class="theme-selector">
 
-    <button
-        type="button"
-        class="theme-button"
-        id="lightThemeButton"
-        title="Modo claro"
-    >
-        ☀
-        <span>Claro</span>
-    </button>
+        <button
+            type="button"
+            class="theme-button"
+            id="lightThemeButton"
+            title="Modo claro"
+        >
+            ☀
+            <span>Claro</span>
+        </button>
 
-    <button
-        type="button"
-        class="theme-button"
-        id="darkThemeButton"
-        title="Modo escuro"
-    >
-        ☾
-        <span>Escuro</span>
-    </button>
+        <button
+            type="button"
+            class="theme-button"
+            id="darkThemeButton"
+            title="Modo escuro"
+        >
+            ☾
+            <span>Escuro</span>
+        </button>
 
-</div>
+    </div>
 
 
 
@@ -50,7 +51,9 @@
 
         <section class="login-container">
 
+
             <!-- LOGO -->
+
             <a
                 href="Login.html"
                 class="logo"
@@ -63,6 +66,7 @@
                         viewBox="0 0 48 48"
                         xmlns="http://www.w3.org/2000/svg"
                     >
+
                         <path
                             d="
                             M32.5 8
@@ -96,6 +100,7 @@
                             "
                             fill="#ff7a1a"
                         />
+
                     </svg>
 
                 </div>
@@ -116,7 +121,9 @@
             </a>
 
 
+
             <!-- CARD -->
+
             <div class="login-card">
 
                 <div class="login-header">
@@ -135,9 +142,12 @@
                 <form
                     id="loginForm"
                     novalidate
+                    onsubmit="redirecionarDashboard(event)"
                 >
 
+
                     <!-- E-MAIL -->
+
                     <div class="form-group">
 
                         <label for="email">
@@ -152,6 +162,7 @@
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
                             >
+
                                 <path
                                     d="M4 6.5H20V17.5H4V6.5Z"
                                     stroke="currentColor"
@@ -166,7 +177,9 @@
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                 />
+
                             </svg>
+
 
                             <input
                                 type="email"
@@ -178,6 +191,7 @@
 
                         </div>
 
+
                         <small
                             class="error-message"
                             id="emailError"
@@ -186,7 +200,9 @@
                     </div>
 
 
+
                     <!-- SENHA -->
+
                     <div class="form-group password-group">
 
                         <label for="senha">
@@ -194,6 +210,7 @@
                         </label>
 
                         <div class="input-wrapper">
+
 
                             <svg
                                 class="input-icon"
@@ -244,8 +261,15 @@
                                     fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
                                 >
+
                                     <path
-                                        d="M2.5 12C4.6 8.5 7.8 6.5 12 6.5C16.2 6.5 19.4 8.5 21.5 12C19.4 15.5 16.2 17.5 12 17.5C7.8 17.5 4.6 15.5 2.5 12Z"
+                                        d="
+                                        M2.5 12
+                                        C4.6 8.5 7.8 6.5 12 6.5
+                                        C16.2 6.5 19.4 8.5 21.5 12
+                                        C19.4 15.5 16.2 17.5 12 17.5
+                                        C7.8 17.5 4.6 15.5 2.5 12Z
+                                        "
                                         stroke="currentColor"
                                         stroke-width="1.6"
                                     />
@@ -257,11 +281,13 @@
                                         stroke="currentColor"
                                         stroke-width="1.6"
                                     />
+
                                 </svg>
 
                             </button>
 
                         </div>
+
 
                         <small
                             class="error-message"
@@ -284,18 +310,17 @@
                     </div>
 
 
+
                     <!-- BOTÃO ENTRAR -->
+
                     <button
                         type="submit"
                         class="login-button"
                         id="loginButton"
-                        
                     >
 
-
                         <span>
-                            <a href="../Dashboard/Dashboard.html">
-                            </a>Entrar
+                            Entrar
                         </span>
 
                         <svg
@@ -303,6 +328,7 @@
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
                         >
+
                             <path
                                 d="M5 12H19"
                                 stroke="currentColor"
@@ -317,12 +343,15 @@
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                             />
+
                         </svg>
 
                     </button>
 
 
+
                     <!-- CADASTRO -->
+
                     <p class="register-text">
 
                         Ainda não possui uma conta?
@@ -334,7 +363,9 @@
                     </p>
 
 
+
                     <!-- TERMOS -->
+
                     <p class="terms">
 
                         Ao entrar você concorda com os
@@ -356,7 +387,9 @@
                     </p>
 
 
+
                     <!-- STATUS -->
+
                     <div class="system-status">
 
                         <span class="status-dot"></span>
@@ -385,7 +418,68 @@
     </main>
 
 
+
     <script src="Login.js"></script>
+
+
+    <script>
+
+        function redirecionarDashboard(event) {
+
+            event.preventDefault();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const senha =
+                document.getElementById("senha").value.trim();
+
+            const emailError =
+                document.getElementById("emailError");
+
+            const senhaError =
+                document.getElementById("senhaError");
+
+
+            emailError.textContent = "";
+            senhaError.textContent = "";
+
+
+            if (!email) {
+
+                emailError.textContent =
+                    "Digite seu e-mail.";
+
+                document
+                    .getElementById("email")
+                    .focus();
+
+                return;
+
+            }
+
+
+            if (!senha) {
+
+                senhaError.textContent =
+                    "Digite sua senha.";
+
+                document
+                    .getElementById("senha")
+                    .focus();
+
+                return;
+
+            }
+
+
+            window.location.href =
+                "../Dashboard/Dashboard.html";
+
+        }
+
+    </script>
+
 
 </body>
 

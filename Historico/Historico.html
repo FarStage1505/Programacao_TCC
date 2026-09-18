@@ -1,0 +1,2842 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LoadSense | Histórico</title>
+
+    <!-- ÍCONES -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #080908;
+            --sidebar: #101110;
+            --topbar: #0b0d0c;
+            --card: #131513;
+            --card-hover: #181a18;
+            --border: #292d29;
+
+            --white: #f5f5f5;
+            --text: #dddddd;
+            --muted: #969b97;
+
+            --orange: #ff571b;
+            --orange-light: #ff7b24;
+
+            --green: #21d86c;
+            --green-bg: #0b2c18;
+            --green-border: #176235;
+
+            --yellow: #ffd333;
+            --yellow-bg: #332b0d;
+            --yellow-border: #66571a;
+
+            --red: #ff2948;
+            --red-bg: #351018;
+            --red-border: #6a1d2b;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: var(--bg);
+            color: var(--white);
+
+            overflow: hidden;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* ==================================================
+           APP
+        ================================================== */
+
+        .app {
+            width: 100%;
+            height: 100vh;
+
+            display: flex;
+
+            background: var(--bg);
+        }
+
+
+        /* ==================================================
+           SIDEBAR
+        ================================================== */
+
+        .sidebar {
+            width: 225px;
+            min-width: 225px;
+            height: 100vh;
+
+            position: relative;
+
+            display: flex;
+            flex-direction: column;
+
+            background: var(--sidebar);
+
+            border-right:
+                1px solid #292c29;
+        }
+
+
+        /* LOGO */
+
+        .logo-area {
+            height: 61px;
+
+            padding:
+                0 15px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            border-bottom:
+                1px solid #292c29;
+        }
+
+        .logo-symbol {
+            width: 39px;
+            height: 39px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+
+            border:
+                1px solid #353835;
+
+            border-radius: 9px;
+
+            background: #070807;
+
+            flex-shrink: 0;
+        }
+
+        .logo-symbol img {
+            width: 100%;
+            height: 100%;
+
+            display: block;
+
+            object-fit: contain;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text strong {
+            font-size: 15px;
+            font-weight: 800;
+
+            letter-spacing:
+                -0.2px;
+        }
+
+        .logo-text strong span {
+            color: var(--orange);
+        }
+
+        .logo-text small {
+            margin-top: 3px;
+
+            color: #ff6843;
+
+            font-size: 7px;
+            font-weight: 600;
+
+            letter-spacing:
+                1px;
+
+            line-height: 1.05;
+        }
+
+
+        /* MENU */
+
+        .sidebar-menu {
+            padding:
+                12px 10px;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 2px;
+        }
+
+        .menu-item {
+            height: 42px;
+
+            padding:
+                0 12px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            position: relative;
+
+            color: #bcc0bd;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            transition:
+                background .18s,
+                color .18s,
+                transform .18s;
+        }
+
+        .menu-item svg {
+            width: 18px;
+            height: 18px;
+
+            flex-shrink: 0;
+
+            stroke-width: 1.75;
+        }
+
+        .menu-item:hover {
+            color: white;
+            background: #181a18;
+        }
+
+        .menu-item.active {
+            color: white;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #ff4f16,
+                    #ff7922
+                );
+
+            box-shadow:
+                0 8px 24px
+                rgba(255, 87, 27, .18);
+        }
+
+        .notification-count {
+            width: 22px;
+            height: 22px;
+
+            margin-left: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #e51f3d;
+
+            color: white;
+
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+
+        /* ESP */
+
+        .esp-card {
+            position: absolute;
+
+            left: 15px;
+            right: 15px;
+            bottom: 14px;
+
+            padding:
+                12px 12px;
+
+            border:
+                1px solid #292d29;
+
+            border-radius: 9px;
+
+            background: #1a1c1a;
+        }
+
+        .esp-title {
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            color: white;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .green-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--green);
+
+            box-shadow:
+                0 0 8px
+                rgba(33, 216, 108, .35);
+        }
+
+        .esp-description {
+            display: block;
+
+            margin-top: 6px;
+
+            color: #949894;
+
+            font-size: 9px;
+        }
+
+
+        /* ==================================================
+           ÁREA PRINCIPAL
+        ================================================== */
+
+        .main-area {
+            width: calc(100% - 225px);
+            height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+
+            min-width: 0;
+        }
+
+
+        /* ==================================================
+           TOPBAR
+        ================================================== */
+
+        .topbar {
+            width: 100%;
+            height: 61px;
+            min-height: 61px;
+
+            padding:
+                0 19px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: var(--topbar);
+
+            border-bottom:
+                1px solid #292d29;
+        }
+
+        .search-box {
+            width: 390px;
+            height: 37px;
+
+            padding:
+                0 12px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+
+            border-radius: 8px;
+
+            background: #272a28;
+
+            color: #8d928e;
+        }
+
+        .search-box svg {
+            width: 16px;
+            height: 16px;
+
+            flex-shrink: 0;
+        }
+
+        .search-box input {
+            width: 100%;
+
+            border: none;
+            outline: none;
+
+            color: white;
+
+            background: transparent;
+
+            font-size: 12px;
+        }
+
+        .search-box input::placeholder {
+            color: #999d99;
+        }
+
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+        }
+
+
+        .system-status {
+            height: 29px;
+
+            padding:
+                0 11px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            color: var(--green);
+
+            background:
+                rgba(22, 174, 91, .08);
+
+            border:
+                1px solid #165d36;
+
+            border-radius: 999px;
+
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .system-status span {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--green);
+        }
+
+
+        .notification-button {
+            position: relative;
+
+            width: 37px;
+            height: 37px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #dedede;
+
+            background: #151715;
+
+            border:
+                1px solid #292d29;
+
+            border-radius: 9px;
+        }
+
+        .notification-button svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .notification-dot {
+            position: absolute;
+
+            top: 6px;
+            right: 7px;
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: var(--orange);
+        }
+
+
+        .user-area {
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff5016,
+                    #ff7a24
+                );
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .user-data {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-data strong {
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .user-data span {
+            margin-top: 3px;
+
+            color: #969b97;
+
+            font-size: 8px;
+        }
+
+
+        /* ==================================================
+           CONTENT
+        ================================================== */
+
+        .content {
+            flex: 1;
+
+            padding:
+                22px 40px 35px;
+
+            overflow-y: auto;
+
+            background: var(--bg);
+        }
+
+        .content::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: #393d39;
+            border-radius: 999px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+
+        .history-wrapper {
+            width: 100%;
+            max-width: 1170px;
+
+            margin:
+                0 auto;
+        }
+
+
+        /* ==================================================
+           PAGE HEADER
+        ================================================== */
+
+        .page-header {
+            margin-bottom: 19px;
+        }
+
+        .page-header h1 {
+            font-size: 22px;
+
+            font-weight: 800;
+
+            letter-spacing:
+                -0.6px;
+        }
+
+        .page-header p {
+            margin-top: 6px;
+
+            color: #969b97;
+
+            font-size: 11px;
+        }
+
+
+        /* ==================================================
+           FILTROS
+        ================================================== */
+
+        .filters {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 12px;
+        }
+
+        .filter-select {
+            min-width: 115px;
+            height: 34px;
+
+            padding:
+                0 10px;
+
+            color: #eeeeee;
+
+            background: #202320;
+
+            border:
+                1px solid #2f332f;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            font-size: 11px;
+
+            cursor: pointer;
+
+            transition:
+                border-color .18s,
+                background .18s;
+        }
+
+        .filter-select:hover,
+        .filter-select:focus {
+            border-color:
+                rgba(255, 87, 27, .65);
+
+            background: #252825;
+        }
+
+        .filter-select option {
+            color: white;
+
+            background: #171917;
+        }
+
+
+        /* ==================================================
+           HISTÓRICO
+        ================================================== */
+
+        .history-list {
+            position: relative;
+
+            padding-left: 19px;
+        }
+
+
+        .history-list::before {
+            content: "";
+
+            position: absolute;
+
+            left: 7px;
+            top: 10px;
+            bottom: 10px;
+
+            width: 1px;
+
+            background:
+                #2b2f2b;
+        }
+
+
+        .history-item {
+            position: relative;
+
+            min-height: 51px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .history-dot {
+            position: absolute;
+
+            left: -1px;
+            top: 15px;
+
+            width: 11px;
+            height: 11px;
+
+            border-radius: 50%;
+
+            z-index: 2;
+
+            border:
+                2px solid #080908;
+        }
+
+
+        .history-dot.normal {
+            background: var(--green);
+        }
+
+        .history-dot.attention {
+            background: var(--yellow);
+        }
+
+        .history-dot.critical {
+            background: var(--red);
+        }
+
+
+        .history-card {
+            min-height: 51px;
+
+            padding:
+                0 14px;
+
+            display: grid;
+
+            grid-template-columns:
+                75px
+                86px
+                75px
+                minmax(125px, 1fr)
+                minmax(95px, 1fr)
+                95px
+                82px;
+
+            align-items: center;
+
+            gap: 0;
+
+            background: #131513;
+
+            border:
+                1px solid #292d29;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            transition:
+                background .16s,
+                border-color .16s,
+                transform .16s;
+        }
+
+        .history-card:hover {
+            background: #181a18;
+
+            border-color:
+                rgba(255, 87, 27, .48);
+
+            transform:
+                translateX(2px);
+        }
+
+
+        .operation-code {
+            color: var(--orange);
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+
+        .operation-date {
+            color: #a1a6a2;
+
+            font-size: 10px;
+        }
+
+
+        .operation-plate {
+            color: #eeeeee;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+
+        .operation-driver,
+        .operation-cargo {
+            color: #9ea39f;
+
+            font-size: 10px;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        .operation-weight {
+            color: #ebeeeb;
+
+            text-align: right;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+
+        .status {
+            justify-self: end;
+
+            min-width: 61px;
+            height: 23px;
+
+            padding:
+                0 8px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 5px;
+
+            border-radius: 999px;
+
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .status::before {
+            content: "";
+
+            width: 5px;
+            height: 5px;
+
+            border-radius: 50%;
+        }
+
+
+        .status.normal {
+            color: var(--green);
+
+            background: var(--green-bg);
+
+            border:
+                1px solid var(--green-border);
+        }
+
+        .status.normal::before {
+            background: var(--green);
+        }
+
+
+        .status.attention {
+            color: var(--yellow);
+
+            background: var(--yellow-bg);
+
+            border:
+                1px solid var(--yellow-border);
+        }
+
+        .status.attention::before {
+            background: var(--yellow);
+        }
+
+
+        .status.critical {
+            color: var(--red);
+
+            background: var(--red-bg);
+
+            border:
+                1px solid var(--red-border);
+        }
+
+        .status.critical::before {
+            background: var(--red);
+        }
+
+
+        .empty-result {
+            padding:
+                35px 20px;
+
+            color: #969b97;
+
+            text-align: center;
+
+            border:
+                1px dashed #303430;
+
+            border-radius: 12px;
+
+            font-size: 12px;
+        }
+
+
+        /* ==================================================
+           MODAL
+        ================================================== */
+
+        .modal-overlay {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 1000;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(0, 0, 0, .74);
+
+            backdrop-filter:
+                blur(2px);
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+
+        .history-modal {
+            width: 440px;
+
+            max-width: 100%;
+
+            padding:
+                18px 19px 20px;
+
+            background: #141614;
+
+            border:
+                1px solid #313531;
+
+            border-radius: 13px;
+
+            box-shadow:
+                0 25px 80px
+                rgba(0, 0, 0, .55);
+
+            animation:
+                modalIn .18s ease;
+        }
+
+
+        @keyframes modalIn {
+
+            from {
+                opacity: 0;
+                transform:
+                    translateY(8px)
+                    scale(.98);
+            }
+
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
+
+
+        .modal-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 15px;
+        }
+
+
+        .modal-heading {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+        }
+
+        .modal-heading h2 {
+            color: var(--orange);
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+
+        .modal-date {
+            margin-top: 7px;
+
+            color: #9ea39f;
+
+            font-size: 10px;
+        }
+
+
+        .close-modal {
+            width: 27px;
+            height: 27px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #dadeda;
+
+            background: transparent;
+
+            border:
+                1px solid transparent;
+
+            border-radius: 7px;
+        }
+
+        .close-modal:hover {
+            color: white;
+
+            border-color:
+                rgba(255, 87, 27, .65);
+
+            background: #1d201d;
+        }
+
+        .close-modal svg {
+            width: 16px;
+            height: 16px;
+        }
+
+
+        .modal-info-grid {
+            margin-top: 18px;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap: 8px;
+        }
+
+
+        .info-card {
+            min-height: 57px;
+
+            padding:
+                10px;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+
+            background: #181b18;
+
+            border:
+                1px solid #2b302b;
+
+            border-radius: 9px;
+        }
+
+
+        .info-label {
+            display: flex;
+            align-items: center;
+
+            gap: 6px;
+
+            color: #989d99;
+
+            font-size: 9px;
+        }
+
+        .info-label svg {
+            width: 12px;
+            height: 12px;
+        }
+
+
+        .info-card strong {
+            margin-top: 6px;
+
+            color: #f1f2f1;
+
+            font-size: 10px;
+        }
+
+
+        .weights {
+            margin-top: 10px;
+
+            padding:
+                12px;
+
+            background: #181b18;
+
+            border:
+                1px solid #2b302b;
+
+            border-radius: 9px;
+        }
+
+
+        .weight-row {
+            min-height: 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            color: #9ca19d;
+
+            font-size: 10px;
+        }
+
+        .weight-row strong {
+            color: #ededed;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            text-align: right;
+        }
+
+
+        .weight-row.difference {
+            margin-top: 4px;
+            padding-top: 7px;
+
+            border-top:
+                1px solid #292d29;
+        }
+
+        .weight-row.difference span {
+            color: var(--orange);
+
+            font-weight: 700;
+        }
+
+        .weight-row.difference strong {
+            color: var(--orange);
+        }
+
+
+        .modal-alert {
+            margin-top: 10px;
+
+            padding:
+                12px;
+
+            background:
+                #2c1710;
+
+            border:
+                1px solid #69301e;
+
+            border-radius: 9px;
+        }
+
+        .modal-alert strong {
+            display: block;
+
+            color: var(--orange);
+
+            font-size: 10px;
+        }
+
+        .modal-alert span {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #b0b3af;
+
+            font-size: 9px;
+        }
+
+
+        /* ==================================================
+           RESPONSIVO
+        ================================================== */
+
+        @media (max-width: 1200px) {
+
+            .content {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+
+            .history-card {
+                grid-template-columns:
+                    75px
+                    82px
+                    75px
+                    minmax(110px, 1fr)
+                    minmax(90px, 1fr)
+                    87px
+                    74px;
+            }
+
+            .search-box {
+                width: 330px;
+            }
+        }
+
+
+        @media (max-width: 950px) {
+
+            .sidebar {
+                width: 70px;
+                min-width: 70px;
+            }
+
+            .main-area {
+                width: calc(100% - 70px);
+            }
+
+            .logo-area {
+                justify-content: center;
+                padding: 0;
+            }
+
+            .logo-text,
+            .menu-item span:not(.notification-count),
+            .esp-card {
+                display: none;
+            }
+
+            .menu-item {
+                justify-content: center;
+                padding: 0;
+            }
+
+            .notification-count {
+                position: absolute;
+
+                top: 2px;
+                right: 3px;
+
+                width: 17px;
+                height: 17px;
+
+                font-size: 8px;
+            }
+
+            .history-card {
+                grid-template-columns:
+                    70px
+                    80px
+                    76px
+                    1fr
+                    85px;
+
+                padding:
+                    0 10px;
+            }
+
+            .operation-driver {
+                display: none;
+            }
+
+            .status {
+                min-width: 58px;
+            }
+        }
+
+
+        @media (max-width: 700px) {
+
+            .topbar {
+                padding:
+                    0 10px;
+            }
+
+            .search-box {
+                width: 50vw;
+                min-width: 180px;
+            }
+
+            .user-data,
+            .system-status {
+                display: none;
+            }
+
+            .content {
+                padding:
+                    18px 12px 25px;
+            }
+
+            .filters {
+                overflow-x: auto;
+                padding-bottom: 2px;
+            }
+
+            .filter-select {
+                flex-shrink: 0;
+            }
+
+            .history-list {
+                padding-left: 15px;
+            }
+
+            .history-list::before {
+                left: 5px;
+            }
+
+            .history-dot {
+                left: -1px;
+            }
+
+            .history-card {
+                grid-template-columns:
+                    70px
+                    75px
+                    1fr
+                    78px;
+
+                min-height: 65px;
+
+                padding:
+                    8px 10px;
+
+                row-gap: 4px;
+            }
+
+            .operation-code {
+                grid-column: 1;
+                grid-row: 1;
+            }
+
+            .operation-date {
+                grid-column: 2;
+                grid-row: 1;
+            }
+
+            .operation-plate {
+                grid-column: 3;
+                grid-row: 1;
+            }
+
+            .operation-driver {
+                display: block;
+
+                grid-column: 1 / 3;
+                grid-row: 2;
+            }
+
+            .operation-cargo {
+                grid-column: 3;
+                grid-row: 2;
+            }
+
+            .operation-weight {
+                grid-column: 3;
+                grid-row: 1;
+
+                justify-self: end;
+                margin-right: 0;
+            }
+
+            .status {
+                grid-column: 4;
+                grid-row: 2;
+            }
+        }
+
+
+        @media (max-width: 500px) {
+
+            .modal-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .history-modal {
+                padding:
+                    15px;
+            }
+
+            .search-box {
+                min-width: 150px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- ==================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="sidebar">
+
+
+        <div class="logo-area">
+
+            <div class="logo-symbol">
+
+                <img
+                    src="data:image/png;base64,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"
+                    alt="LoadSense"
+                >
+
+            </div>
+
+
+            <div class="logo-text">
+
+                <strong>
+                    LOAD<span>SENSE</span>
+                </strong>
+
+                <small>
+                    SUA LOGÍSTICA EM TEMPO<br>
+                    REAL
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+
+            <a
+                href="../Dashboard/Dashboard.html"
+                class="menu-item"
+            >
+
+                <i data-lucide="layout-dashboard"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a
+                href="../Planilha/Planilha.html"
+                class="menu-item"
+            >
+
+                <i data-lucide="table-2"></i>
+
+                <span>
+                    Planilha Operacional
+                </span>
+
+            </a>
+
+
+            <a
+                href="../NovaPesagem/NovaPesagem.html"
+                class="menu-item"
+            >
+
+                <i data-lucide="circle-plus"></i>
+
+                <span>
+                    Nova Pesagem
+                </span>
+
+            </a>
+
+
+            <a
+                href="../Alertas.html"
+                class="menu-item"
+            >
+
+                <i data-lucide="bell"></i>
+
+                <span>
+                    Alertas
+                </span>
+
+                <span class="notification-count">
+                    12
+                </span>
+
+            </a>
+
+
+            <a
+                href="../Relatorios.html"
+                class="menu-item"
+            >
+
+                <i data-lucide="chart-no-axes-column"></i>
+
+                <span>
+                    Relatórios
+                </span>
+
+            </a>
+
+
+            <a
+                href="Historico.html"
+                class="menu-item active"
+            >
+
+                <i data-lucide="history"></i>
+
+                <span>
+                    Histórico
+                </span>
+
+            </a>
+
+
+            <a
+                href="#"
+                class="menu-item"
+            >
+
+                <i data-lucide="sparkles"></i>
+
+                <span>
+                    Monitoramento
+                </span>
+
+            </a>
+
+
+            <a
+                href="#"
+                class="menu-item"
+            >
+
+                <i data-lucide="settings"></i>
+
+                <span>
+                    Configurações
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <div class="esp-card">
+
+            <div class="esp-title">
+
+                <span class="green-dot"></span>
+
+                ESP32 conectado
+
+            </div>
+
+            <span class="esp-description">
+                HX711 · 80 SPS · estável
+            </span>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ==================================================
+         ÁREA PRINCIPAL
+    ================================================== -->
+
+    <div class="main-area">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+
+            <div class="search-box">
+
+                <i data-lucide="search"></i>
+
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="Buscar operação, placa, motorista..."
+                >
+
+            </div>
+
+
+            <div class="topbar-right">
+
+
+                <div class="system-status">
+
+                    <span></span>
+
+                    Sistema online
+
+                </div>
+
+
+                <button
+                    class="notification-button"
+                    type="button"
+                >
+
+                    <i data-lucide="bell"></i>
+
+                    <span class="notification-dot"></span>
+
+                </button>
+
+
+                <div class="user-area">
+
+                    <div class="avatar">
+                        RA
+                    </div>
+
+                    <div class="user-data">
+
+                        <strong>
+                            Renato Admin
+                        </strong>
+
+                        <span>
+                            Administrador
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </header>
+
+
+
+        <!-- CONTEÚDO -->
+
+        <main class="content">
+
+            <div class="history-wrapper">
+
+
+                <section class="page-header">
+
+                    <h1>
+                        Histórico
+                    </h1>
+
+                    <p>
+                        Histórico completo das operações armazenadas
+                    </p>
+
+                </section>
+
+
+                <!-- FILTROS -->
+
+                <div class="filters">
+
+
+                    <select
+                        class="filter-select"
+                        id="statusFilter"
+                    >
+
+                        <option value="all">
+                            Todos status
+                        </option>
+
+                        <option value="normal">
+                            Normal
+                        </option>
+
+                        <option value="attention">
+                            Atenção
+                        </option>
+
+                        <option value="critical">
+                            Crítico
+                        </option>
+
+                    </select>
+
+
+                    <select
+                        class="filter-select"
+                        id="driverFilter"
+                    >
+
+                        <option value="all">
+                            Todos motoristas
+                        </option>
+
+                    </select>
+
+
+                    <select
+                        class="filter-select"
+                        id="cargoFilter"
+                    >
+
+                        <option value="all">
+                            Todos tipos
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+
+                <!-- LISTA -->
+
+                <section
+                    class="history-list"
+                    id="historyList"
+                ></section>
+
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================================================
+     MODAL
+================================================== -->
+
+<div
+    class="modal-overlay"
+    id="modalOverlay"
+>
+
+
+    <div
+        class="history-modal"
+        role="dialog"
+        aria-modal="true"
+    >
+
+
+        <div class="modal-top">
+
+
+            <div>
+
+                <div class="modal-heading">
+
+                    <h2 id="modalOperation">
+                        OP-2480
+                    </h2>
+
+                    <span
+                        id="modalStatus"
+                        class="status normal"
+                    >
+                        Normal
+                    </span>
+
+                </div>
+
+
+                <p
+                    class="modal-date"
+                    id="modalDate"
+                >
+                    16/06, 08:00
+                </p>
+
+            </div>
+
+
+            <button
+                class="close-modal"
+                id="closeModal"
+                type="button"
+                aria-label="Fechar"
+            >
+
+                <i data-lucide="x"></i>
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- INFORMAÇÕES -->
+
+        <div class="modal-info-grid">
+
+
+            <div class="info-card">
+
+                <div class="info-label">
+
+                    <i data-lucide="truck"></i>
+
+                    Placa
+
+                </div>
+
+                <strong id="modalPlate">
+                    ABC1D23
+                </strong>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-label">
+
+                    <i data-lucide="user-round"></i>
+
+                    Motorista
+
+                </div>
+
+                <strong id="modalDriver">
+                    Carlos Mendes
+                </strong>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-label">
+
+                    <i data-lucide="radio"></i>
+
+                    RFID
+
+                </div>
+
+                <strong id="modalRFID">
+                    RF-186A0
+                </strong>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-label">
+
+                    <i data-lucide="package"></i>
+
+                    Tipo de carga
+
+                </div>
+
+                <strong id="modalCargo">
+                    Grãos
+                </strong>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-label">
+
+                    <i data-lucide="map-pin"></i>
+
+                    Rota
+
+                </div>
+
+                <strong id="modalRoute">
+                    Curitiba → Cascavel
+                </strong>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-label">
+
+                    <i data-lucide="user-cog"></i>
+
+                    Responsável
+
+                </div>
+
+                <strong id="modalResponsible">
+                    Op. Sandra
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- PESOS -->
+
+        <div class="weights">
+
+
+            <div class="weight-row">
+
+                <span>
+                    Peso caminhão vazio
+                </span>
+
+                <strong id="modalEmptyWeight">
+                    14.165 kg
+                </strong>
+
+            </div>
+
+
+            <div class="weight-row">
+
+                <span>
+                    Peso da carga
+                </span>
+
+                <strong id="modalCargoWeight">
+                    14.318 kg
+                </strong>
+
+            </div>
+
+
+            <div class="weight-row">
+
+                <span>
+                    Peso esperado
+                </span>
+
+                <strong id="modalExpected">
+                    28.483 kg
+                </strong>
+
+            </div>
+
+
+            <div class="weight-row">
+
+                <span>
+                    Peso total real
+                </span>
+
+                <strong id="modalReal">
+                    28.294 kg
+                </strong>
+
+            </div>
+
+
+            <div class="weight-row difference">
+
+                <span>
+                    Diferença
+                </span>
+
+                <strong id="modalDifference">
+                    -189 kg (-0.66%)
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ALERTA -->
+
+        <div class="modal-alert">
+
+            <strong id="modalAlertTitle">
+                Alerta: Sem alerta
+            </strong>
+
+            <span id="modalAlertDescription">
+                Operação dentro da tolerância.
+            </span>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+    /* ==================================================
+       DADOS DO HISTÓRICO
+    ================================================== */
+
+    const operations = [
+
+        {
+            operation: "OP-2480",
+            date: "16/06, 08:00",
+            plate: "ABC1D23",
+            driver: "Carlos Mendes",
+            cargo: "Grãos",
+            weight: "28.294 kg",
+            status: "normal",
+            rfid: "RF-186A0",
+            route: "Curitiba → Cascavel",
+            responsible: "Op. Sandra",
+            emptyWeight: "14.165 kg",
+            cargoWeight: "14.318 kg",
+            expected: "28.483 kg",
+            real: "28.294 kg",
+            difference: "-189 kg (-0.66%)",
+            alertTitle: "Alerta: Sem alerta",
+            alertDescription: "Operação dentro da tolerância."
+        },
+
+        {
+            operation: "OP-2479",
+            date: "16/06, 09:13",
+            plate: "QWE4R56",
+            driver: "Ana Souza",
+            cargo: "Cimento",
+            weight: "30.336 kg",
+            status: "normal",
+            rfid: "RF-184C2",
+            route: "Londrina → Maringá",
+            responsible: "Op. Rafael",
+            emptyWeight: "14.822 kg",
+            cargoWeight: "15.645 kg",
+            expected: "30.467 kg",
+            real: "30.336 kg",
+            difference: "-131 kg (-0.43%)",
+            alertTitle: "Alerta: Sem alerta",
+            alertDescription: "Operação dentro da tolerância."
+        },
+
+        {
+            operation: "OP-2478",
+            date: "16/06, 10:26",
+            plate: "JKL7M89",
+            driver: "Roberto Lima",
+            cargo: "Bebidas",
+            weight: "36.054 kg",
+            status: "normal",
+            rfid: "RF-183D1",
+            route: "Cascavel → Toledo",
+            responsible: "Op. Marcos",
+            emptyWeight: "14.510 kg",
+            cargoWeight: "21.600 kg",
+            expected: "36.110 kg",
+            real: "36.054 kg",
+            difference: "-56 kg (-0.16%)",
+            alertTitle: "Alerta: Sem alerta",
+            alertDescription: "Operação dentro da tolerância."
+        },
+
+        {
+            operation: "OP-2477",
+            date: "15/06, 11:39",
+            plate: "RTY2U10",
+            driver: "Júlia Castro",
+            cargo: "Aço",
+            weight: "28.950 kg",
+            status: "critical",
+            rfid: "RF-1883B",
+            route: "Cascavel → Pato Branco",
+            responsible: "Op. Camila",
+            emptyWeight: "14.977 kg",
+            cargoWeight: "15.700 kg",
+            expected: "30.677 kg",
+            real: "28.950 kg",
+            difference: "-1.727 kg (-5.63%)",
+            alertTitle: "Alerta: Possível falta de carga",
+            alertDescription: "Verificar carga e lacre."
+        },
+
+        {
+            operation: "OP-2476",
+            date: "15/06, 12:52",
+            plate: "PLM3N45",
+            driver: "Marcos Dias",
+            cargo: "Madeira",
+            weight: "35.956 kg",
+            status: "attention",
+            rfid: "RF-181F9",
+            route: "Guarapuava → Curitiba",
+            responsible: "Op. Felipe",
+            emptyWeight: "15.200 kg",
+            cargoWeight: "20.100 kg",
+            expected: "35.300 kg",
+            real: "35.956 kg",
+            difference: "+656 kg (+1.86%)",
+            alertTitle: "Alerta: Peso acima do esperado",
+            alertDescription: "Verificar limite e documentação da carga."
+        },
+
+        {
+            operation: "OP-2475",
+            date: "15/06, 13:05",
+            plate: "ZXC8V67",
+            driver: "Felipe Rocha",
+            cargo: "Fertilizante",
+            weight: "23.656 kg",
+            status: "normal",
+            rfid: "RF-17BC4",
+            route: "Londrina → Arapongas",
+            responsible: "Op. Sandra",
+            emptyWeight: "13.580 kg",
+            cargoWeight: "10.120 kg",
+            expected: "23.700 kg",
+            real: "23.656 kg",
+            difference: "-44 kg (-0.19%)",
+            alertTitle: "Alerta: Sem alerta",
+            alertDescription: "Operação dentro da tolerância."
+        },
+
+        {
+            operation: "OP-2474",
+            date: "14/06, 14:18",
+            plate: "BNM5K32",
+            driver: "Patrícia Alves",
+            cargo: "Combustível",
+            weight: "31.411 kg",
+            status: "normal",
+            rfid: "RF-177E2",
+            route: "Ponta Grossa → Curitiba",
+            responsible: "Op. Diego",
+            emptyWeight: "14.920 kg",
+            cargoWeight: "16.620 kg",
+            expected: "31.540 kg",
+            real: "31.411 kg",
+            difference: "-129 kg (-0.41%)",
+            alertTitle: "Alerta: Sem alerta",
+            alertDescription: "Operação dentro da tolerância."
+        },
+
+        {
+            operation: "OP-2473",
+            date: "14/06, 15:31",
+            plate: "FGH9J21",
+            driver: "Bruno Teixeira",
+            cargo: "Grãos",
+            weight: "25.534 kg",
+            status: "normal",
+            rfid: "RF-176D8",
+            route: "Cascavel → Toledo",
+            responsible: "Op. Rafael",
+            emptyWeight: "13.900 kg",
+            cargoWeight: "11.700 kg",
+            expected: "25.600 kg",
+            real: "25.534 kg",
+            difference: "-66 kg (-0.26%)",
+            alertTitle: "Alerta: Sem alerta",
+            alertDescription: "Operação dentro da tolerância."
+        },
+
+        {
+            operation: "OP-2472",
+            date: "14/06, 16:44",
+            plate: "ABC1D23",
+            driver: "Carlos Mendes",
+            cargo: "Cimento",
+            weight: "25.849 kg",
+            status: "normal",
+            rfid: "RF-173A1",
+            route: "Curitiba → Campo Largo",
+            responsible: "Op. Sandra",
+            emptyWeight: "14.160 kg",
+            cargoWeight: "11.820 kg",
+            expected: "25.980 kg",
+            real: "25.849 kg",
+            difference: "-131 kg (-0.50%)",
+            alertTitle: "Alerta: Sem alerta",
+            alertDescription: "Operação dentro da tolerância."
+        },
+
+        {
+            operation: "OP-2471",
+            date: "13/06, 17:57",
+            plate: "QWE4R56",
+            driver: "Ana Souza",
+            cargo: "Bebidas",
+            weight: "30.536 kg",
+            status: "normal",
+            rfid: "RF-171C7",
+            route: "Maringá → Londrina",
+            responsible: "Op. Camila",
+            emptyWeight: "14.620 kg",
+            cargoWeight: "16.000 kg",
+            expected: "30.620 kg",
+            real: "30.536 kg",
+            difference: "-84 kg (-0.27%)",
+            alertTitle: "Alerta: Sem alerta",
+            alertDescription: "Operação dentro da tolerância."
+        },
+
+        {
+            operation: "OP-2464",
+            date: "11/06, 14:28",
+            plate: "ABC1D23",
+            driver: "Carlos Mendes",
+            cargo: "Bebidas",
+            weight: "27.348 kg",
+            status: "normal",
+            rfid: "RF-16AA3",
+            route: "Curitiba → Ponta Grossa",
+            responsible: "Op. Diego",
+            emptyWeight: "14.100 kg",
+            cargoWeight: "13.320 kg",
+            expected: "27.420 kg",
+            real: "27.348 kg",
+            difference: "-72 kg (-0.26%)",
+            alertTitle: "Alerta: Sem alerta",
+            alertDescription: "Operação dentro da tolerância."
+        },
+
+        {
+            operation: "OP-2457",
+            date: "09/06, 11:59",
+            plate: "FGH9J21",
+            driver: "Bruno Teixeira",
+            cargo: "Bebidas",
+            weight: "28.348 kg",
+            status: "attention",
+            rfid: "RF-15CD8",
+            route: "Toledo → Cascavel",
+            responsible: "Op. Felipe",
+            emptyWeight: "13.860 kg",
+            cargoWeight: "14.020 kg",
+            expected: "27.880 kg",
+            real: "28.348 kg",
+            difference: "+468 kg (+1.68%)",
+            alertTitle: "Alerta: Peso acima do esperado",
+            alertDescription: "Verificar quantidade de carga."
+        },
+
+        {
+            operation: "OP-2456",
+            date: "08/06, 12:12",
+            plate: "ABC1D23",
+            driver: "Carlos Mendes",
+            cargo: "Aço",
+            weight: "32.933 kg",
+            status: "normal",
+            rfid: "RF-14BE5",
+            route: "Curitiba → Araucária",
+            responsible: "Op. Sandra",
+            emptyWeight: "14.180 kg",
+            cargoWeight: "18.840 kg",
+            expected: "33.020 kg",
+            real: "32.933 kg",
+            difference: "-87 kg (-0.26%)",
+            alertTitle: "Alerta: Sem alerta",
+            alertDescription: "Operação dentro da tolerância."
+        }
+
+    ];
+
+
+
+    /* ==================================================
+       ELEMENTOS
+    ================================================== */
+
+    const historyList =
+        document.getElementById(
+            "historyList"
+        );
+
+    const searchInput =
+        document.getElementById(
+            "searchInput"
+        );
+
+    const statusFilter =
+        document.getElementById(
+            "statusFilter"
+        );
+
+    const driverFilter =
+        document.getElementById(
+            "driverFilter"
+        );
+
+    const cargoFilter =
+        document.getElementById(
+            "cargoFilter"
+        );
+
+    const modalOverlay =
+        document.getElementById(
+            "modalOverlay"
+        );
+
+    const closeModal =
+        document.getElementById(
+            "closeModal"
+        );
+
+
+
+    /* ==================================================
+       FORMATAÇÃO
+    ================================================== */
+
+    function statusLabel(status) {
+
+        if (status === "attention") {
+            return "Atenção";
+        }
+
+        if (status === "critical") {
+            return "Crítico";
+        }
+
+        return "Normal";
+    }
+
+
+
+    function normalizeText(text) {
+
+        return String(text)
+            .normalize("NFD")
+            .replace(
+                /[\u0300-\u036f]/g,
+                ""
+            )
+            .toLowerCase();
+
+    }
+
+
+
+    /* ==================================================
+       POPULAR FILTROS
+    ================================================== */
+
+    function populateFilters() {
+
+        const drivers = [
+            ...new Set(
+                operations.map(
+                    item => item.driver
+                )
+            )
+        ].sort();
+
+
+        const cargos = [
+            ...new Set(
+                operations.map(
+                    item => item.cargo
+                )
+            )
+        ].sort();
+
+
+        drivers.forEach(driver => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                driver;
+
+            option.textContent =
+                driver;
+
+            driverFilter.appendChild(
+                option
+            );
+
+        });
+
+
+        cargos.forEach(cargo => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                cargo;
+
+            option.textContent =
+                cargo;
+
+            cargoFilter.appendChild(
+                option
+            );
+
+        });
+
+    }
+
+
+
+    /* ==================================================
+       RENDERIZAR HISTÓRICO
+    ================================================== */
+
+    function renderHistory() {
+
+        const search =
+            normalizeText(
+                searchInput.value.trim()
+            );
+
+        const selectedStatus =
+            statusFilter.value;
+
+        const selectedDriver =
+            driverFilter.value;
+
+        const selectedCargo =
+            cargoFilter.value;
+
+
+        const filtered =
+            operations.filter(item => {
+
+                const matchesSearch =
+                    !search ||
+                    normalizeText(
+                        item.operation
+                    ).includes(search) ||
+                    normalizeText(
+                        item.plate
+                    ).includes(search) ||
+                    normalizeText(
+                        item.driver
+                    ).includes(search) ||
+                    normalizeText(
+                        item.cargo
+                    ).includes(search);
+
+
+                const matchesStatus =
+                    selectedStatus === "all" ||
+                    item.status === selectedStatus;
+
+
+                const matchesDriver =
+                    selectedDriver === "all" ||
+                    item.driver === selectedDriver;
+
+
+                const matchesCargo =
+                    selectedCargo === "all" ||
+                    item.cargo === selectedCargo;
+
+
+                return (
+                    matchesSearch &&
+                    matchesStatus &&
+                    matchesDriver &&
+                    matchesCargo
+                );
+
+            });
+
+
+        historyList.innerHTML = "";
+
+
+        if (!filtered.length) {
+
+            historyList.innerHTML = `
+                <div class="empty-result">
+                    Nenhuma operação encontrada.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        filtered.forEach(item => {
+
+            const historyItem =
+                document.createElement(
+                    "div"
+                );
+
+            historyItem.className =
+                "history-item";
+
+
+            historyItem.innerHTML = `
+
+                <span
+                    class="history-dot ${item.status}"
+                ></span>
+
+                <div
+                    class="history-card"
+                    data-operation="${item.operation}"
+                >
+
+                    <span class="operation-code">
+                        ${item.operation}
+                    </span>
+
+                    <span class="operation-date">
+                        ${item.date}
+                    </span>
+
+                    <span class="operation-plate">
+                        ${item.plate}
+                    </span>
+
+                    <span class="operation-driver">
+                        ${item.driver}
+                    </span>
+
+                    <span class="operation-cargo">
+                        ${item.cargo}
+                    </span>
+
+                    <span class="operation-weight">
+                        ${item.weight}
+                    </span>
+
+                    <span class="status ${item.status}">
+                        ${statusLabel(item.status)}
+                    </span>
+
+                </div>
+
+            `;
+
+
+            historyItem
+                .querySelector(
+                    ".history-card"
+                )
+                .addEventListener(
+                    "click",
+                    () => openModal(item)
+                );
+
+
+            historyList.appendChild(
+                historyItem
+            );
+
+        });
+
+    }
+
+
+
+    /* ==================================================
+       MODAL
+    ================================================== */
+
+    function openModal(item) {
+
+        document.getElementById(
+            "modalOperation"
+        ).textContent =
+            item.operation;
+
+
+        const modalStatus =
+            document.getElementById(
+                "modalStatus"
+            );
+
+        modalStatus.className =
+            `status ${item.status}`;
+
+        modalStatus.textContent =
+            statusLabel(item.status);
+
+
+        document.getElementById(
+            "modalDate"
+        ).textContent =
+            item.date;
+
+
+        document.getElementById(
+            "modalPlate"
+        ).textContent =
+            item.plate;
+
+
+        document.getElementById(
+            "modalDriver"
+        ).textContent =
+            item.driver;
+
+
+        document.getElementById(
+            "modalRFID"
+        ).textContent =
+            item.rfid;
+
+
+        document.getElementById(
+            "modalCargo"
+        ).textContent =
+            item.cargo;
+
+
+        document.getElementById(
+            "modalRoute"
+        ).textContent =
+            item.route;
+
+
+        document.getElementById(
+            "modalResponsible"
+        ).textContent =
+            item.responsible;
+
+
+        document.getElementById(
+            "modalEmptyWeight"
+        ).textContent =
+            item.emptyWeight;
+
+
+        document.getElementById(
+            "modalCargoWeight"
+        ).textContent =
+            item.cargoWeight;
+
+
+        document.getElementById(
+            "modalExpected"
+        ).textContent =
+            item.expected;
+
+
+        document.getElementById(
+            "modalReal"
+        ).textContent =
+            item.real;
+
+
+        document.getElementById(
+            "modalDifference"
+        ).textContent =
+            item.difference;
+
+
+        document.getElementById(
+            "modalAlertTitle"
+        ).textContent =
+            item.alertTitle;
+
+
+        document.getElementById(
+            "modalAlertDescription"
+        ).textContent =
+            item.alertDescription;
+
+
+        modalOverlay.classList.add(
+            "show"
+        );
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+
+    function closeHistoryModal() {
+
+        modalOverlay.classList.remove(
+            "show"
+        );
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+
+    /* ==================================================
+       EVENTOS
+    ================================================== */
+
+    searchInput.addEventListener(
+        "input",
+        renderHistory
+    );
+
+
+    statusFilter.addEventListener(
+        "change",
+        renderHistory
+    );
+
+
+    driverFilter.addEventListener(
+        "change",
+        renderHistory
+    );
+
+
+    cargoFilter.addEventListener(
+        "change",
+        renderHistory
+    );
+
+
+    closeModal.addEventListener(
+        "click",
+        closeHistoryModal
+    );
+
+
+    modalOverlay.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                modalOverlay
+            ) {
+
+                closeHistoryModal();
+
+            }
+
+        }
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Escape" &&
+                modalOverlay.classList.contains(
+                    "show"
+                )
+            ) {
+
+                closeHistoryModal();
+
+            }
+
+        }
+    );
+
+
+
+    /* ==================================================
+       INICIALIZAÇÃO
+    ================================================== */
+
+    populateFilters();
+
+    renderHistory();
+
+    lucide.createIcons();
+
+</script>
+
+</body>
+
+</html>
