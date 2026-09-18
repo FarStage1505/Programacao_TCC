@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LoadSense | Monitoramento</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <link rel="stylesheet" href="Monitoramento.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo-area">
+
+            <div class="logo-symbol">
+
+                <img
+                    src="../logo-loadsense.jpg"
+                    alt="Símbolo LoadSense"
+                >
+
+            </div>
+
+            <div class="logo-text">
+
+                <strong>
+                    LOAD<span>SENSE</span>
+                </strong>
+
+                <small>
+                    SUA LOGÍSTICA EM TEMPO<br>
+                    REAL
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <a
+                href="../Dashboard/Dashboard.html"
+                class="menu-item"
+            >
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+
+            <a
+                href="../Planilha/Planilha.html"
+                class="menu-item"
+            >
+                <span class="nav-icon">▦</span>
+                <span>Planilha Operacional</span>
+            </a>
+
+
+            <a
+                href="../NovaPesagem/NovaPesagem.html"
+                class="menu-item"
+            >
+                <span class="nav-icon">⊕</span>
+                <span>Nova Pesagem</span>
+            </a>
+
+
+            <a
+                href="../Alertas/Alertas.html"
+                class="menu-item"
+            >
+                <span class="nav-icon">♧</span>
+                <span>Alertas</span>
+
+                <span class="notification-count">
+                    10
+                </span>
+            </a>
+
+
+            <a
+                href="../Relatorios/Relatorios.html"
+                class="menu-item"
+            >
+                <span class="nav-icon">▥</span>
+                <span>Relatórios</span>
+            </a>
+
+
+            <a
+                href="../Historico/Historico.html"
+                class="menu-item"
+            >
+                <span class="nav-icon">◷</span>
+                <span>Histórico</span>
+            </a>
+
+
+            <a
+                href="../Monitoramento/Monitoramento.html"
+                class="menu-item active"
+            >
+                <span class="nav-icon">⌖</span>
+                <span>Monitoramento</span>
+            </a>
+
+
+            <a
+                href="../Configuracoes/Configuracoes.html"
+                class="menu-item"
+                id="settingsLink"
+            >
+                <span class="nav-icon">⚙</span>
+                <span>Configurações</span>
+            </a>
+
+        </nav>
+
+
+        <div class="esp-card">
+
+            <div class="esp-title">
+
+                <span class="green-dot"></span>
+
+                ESP32 conectado
+
+            </div>
+
+            <span class="esp-description">
+                HX711 · 80 SPS · estável
+            </span>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ÁREA PRINCIPAL -->
+    <section class="main-area">
+
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div class="global-search">
+
+                <span class="search-icon">
+                    ⌕
+                </span>
+
+                <input
+                    id="globalSearch"
+                    type="search"
+                    placeholder="Buscar operação, placa, motorista..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <div class="system-status">
+
+                    <span></span>
+
+                    Sistema online
+
+                </div>
+
+
+                <button
+                    class="icon-button"
+                    id="themeButton"
+                    type="button"
+                >
+                    ☼
+                </button>
+
+
+                <button
+                    class="icon-button has-notification"
+                    id="notificationButton"
+                    type="button"
+                >
+                    ♧
+
+                    <span></span>
+
+                </button>
+
+
+                <div class="user-area">
+
+                    <div class="avatar">
+                        RA
+                    </div>
+
+
+                    <div class="user-data">
+
+                        <strong>
+                            Renato Admin
+                        </strong>
+
+                        <span>
+                            Administrador
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTEÚDO -->
+        <main class="content">
+
+
+            <section class="page-header">
+
+                <h1>
+                    Monitoramento
+                </h1>
+
+                <p>
+                    Rastreamento das operações em andamento em tempo real
+                </p>
+
+            </section>
+
+
+            <!-- CONTROLES -->
+
+            <section class="toolbar-row">
+
+
+                <div class="view-switch">
+
+                    <button
+                        class="view-button active"
+                        id="mapViewButton"
+                        type="button"
+                    >
+
+                        <span>
+                            ▣
+                        </span>
+
+                        Mapa
+
+                    </button>
+
+
+                    <button
+                        class="view-button"
+                        id="listViewButton"
+                        type="button"
+                    >
+
+                        <span>
+                            ☷
+                        </span>
+
+                        Lista
+
+                    </button>
+
+                </div>
+
+
+                <div class="operation-search-wrap">
+
+                    <span class="search-icon">
+                        ⌕
+                    </span>
+
+                    <input
+                        id="operationSearch"
+                        type="search"
+                        placeholder="Buscar caminhão, rota ou motorista..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <div
+                    class="active-count"
+                    id="activeCount"
+                >
+                    0 operações ativas
+                </div>
+
+            </section>
+
+
+            <!-- MAPA -->
+
+            <section
+                class="monitor-grid"
+                id="mapLayout"
+            >
+
+
+                <div class="map-card">
+
+                    <div
+                        id="map"
+                    ></div>
+
+
+                    <div
+                        class="map-loading"
+                        id="mapLoading"
+                    >
+
+                        <span class="spinner"></span>
+
+                        <span>
+                            Carregando mapa...
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="map-error"
+                        id="mapError"
+                        hidden
+                    ></div>
+
+                </div>
+
+
+                <!-- DETALHES -->
+
+                <aside class="details-card">
+
+
+                    <div class="details-title-row">
+
+                        <h2>
+                            Operação selecionada
+                        </h2>
+
+
+                        <button
+                            class="close-details"
+                            id="clearSelection"
+                            type="button"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="selected-operation"
+                        id="selectedOperation"
+                    ></div>
+
+
+                    <div class="other-title">
+                        Outras operações
+                    </div>
+
+
+                    <div
+                        class="operation-list"
+                        id="operationList"
+                    ></div>
+
+                </aside>
+
+            </section>
+
+
+            <!-- LISTA COMPLETA -->
+
+            <section
+                id="listLayout"
+                class="list-grid"
+                hidden
+            >
+
+                <div
+                    id="cardsList"
+                    class="cards-list"
+                ></div>
+
+            </section>
+
+        </main>
+
+    </section>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"
+></script>
+
+<script src="Monitoramento.js"></script>
+
+</body>
+</html>
