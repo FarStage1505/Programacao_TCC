@@ -102,13 +102,18 @@
             align-items: center;
             justify-content: center;
 
-            font-size: 26px;
-            font-weight: 900;
-            font-style: italic;
+            overflow: hidden;
+            background: #070707;
+            flex-shrink: 0;
+        }
 
-            color: var(--orange);
+        .logo-symbol img {
+            width: 100%;
+            height: 100%;
 
-            transform: skew(-8deg);
+            display: block;
+
+            object-fit: contain;
         }
 
         .logo-text {
@@ -1143,7 +1148,10 @@
         <div class="logo-area">
 
             <div class="logo-symbol">
-                S
+                <img
+                    src="../logo-loadsense.png"
+                    alt="LoadSense"
+                >
             </div>
 
             <div class="logo-text">
@@ -1164,7 +1172,8 @@
 
         <nav class="sidebar-menu">
 
-            <a href="Dashboard.html" class="menu-item">
+            <!-- DASHBOARD -->
+            <a href="../Dashboard/Dashboard.html" class="menu-item">
 
                 <i data-lucide="layout-dashboard"></i>
 
@@ -1175,7 +1184,8 @@
             </a>
 
 
-            <a href="Planilha.html" class="menu-item">
+            <!-- PLANILHA -->
+            <a href="../Planilha/Planilha.html" class="menu-item">
 
                 <i data-lucide="table-2"></i>
 
@@ -1186,7 +1196,8 @@
             </a>
 
 
-            <a href="NovaPesagem.html" class="menu-item">
+            <!-- NOVA PESAGEM -->
+            <a href="../NovaPesagem/NovaPesagem.html" class="menu-item">
 
                 <i data-lucide="circle-plus"></i>
 
@@ -1197,7 +1208,8 @@
             </a>
 
 
-            <a href="Alerta/Alertas.html" class="menu-item">
+            <!-- ALERTAS -->
+            <a href="../Alertas.html" class="menu-item">
 
                 <i data-lucide="bell"></i>
 
@@ -1205,16 +1217,13 @@
                     Alertas
                 </span>
 
-                <span class="notification-count">
-                    12
-                </span>
-
             </a>
 
 
-            <a href="Relatórios.html" class="menu-item active">
+            <!-- RELATÓRIOS -->
+            <a href="../Relatórios.html" class="menu-item active">
 
-                <i data-lucide="file-chart-column"></i>
+                <i data-lucide="chart-no-axes-column"></i>
 
                 <span>
                     Relatórios
@@ -1223,6 +1232,7 @@
             </a>
 
 
+            <!-- HISTÓRICO -->
             <a href="#" class="menu-item">
 
                 <i data-lucide="history"></i>
@@ -1234,17 +1244,19 @@
             </a>
 
 
+            <!-- MONITORAMENTO -->
             <a href="#" class="menu-item">
 
                 <i data-lucide="sparkles"></i>
 
                 <span>
-                    IA LoadSense
+                    Monitoramento
                 </span>
 
             </a>
 
 
+            <!-- CONFIGURAÇÕES -->
             <a href="#" class="menu-item">
 
                 <i data-lucide="settings"></i>
@@ -1531,44 +1543,68 @@
 
                         <div class="table-row">
 
-                            <span>Normal</span>
+                            <span>
+                                Normal
+                            </span>
 
-                            <span>15</span>
+                            <span>
+                                15
+                            </span>
 
-                            <span>53.6%</span>
-
-                        </div>
-
-
-                        <div class="table-row">
-
-                            <span>Atenção</span>
-
-                            <span>7</span>
-
-                            <span>25.0%</span>
+                            <span>
+                                53.6%
+                            </span>
 
                         </div>
 
 
                         <div class="table-row">
 
-                            <span>Crítico</span>
+                            <span>
+                                Atenção
+                            </span>
 
-                            <span>4</span>
+                            <span>
+                                7
+                            </span>
 
-                            <span>14.3%</span>
+                            <span>
+                                25.0%
+                            </span>
 
                         </div>
 
 
                         <div class="table-row">
 
-                            <span>Análise</span>
+                            <span>
+                                Crítico
+                            </span>
 
-                            <span>2</span>
+                            <span>
+                                4
+                            </span>
 
-                            <span>7.1%</span>
+                            <span>
+                                14.3%
+                            </span>
+
+                        </div>
+
+
+                        <div class="table-row">
+
+                            <span>
+                                Análise
+                            </span>
+
+                            <span>
+                                2
+                            </span>
+
+                            <span>
+                                7.1%
+                            </span>
 
                         </div>
 
@@ -1639,7 +1675,12 @@
 
 
 <!-- JAVASCRIPT EXTERNO -->
+
 <script src="Relatórios.js"></script>
+
+<script>
+    lucide.createIcons();
+</script>
 
 </body>
 </html>
