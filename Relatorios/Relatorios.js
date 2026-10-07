@@ -1,24 +1,9 @@
-/* =========================================================
-   LOADSENSE - RELATÓRIOS.JS
-   ========================================================= */
 
-
-/* =========================================================
-   CONFIGURAÇÃO
-
-   false = usa os dados simulados abaixo.
-   true  = futuramente buscará os dados da API/banco.
-   ========================================================= */
 
 const USAR_API = false;
 
 
-/* =========================================================
-   DADOS SIMULADOS
 
-   Futuramente estes dados serão substituídos pelos dados
-   retornados pelo banco de dados.
-   ========================================================= */
 
 const relatoriosMock = {
 
@@ -203,16 +188,6 @@ let periodoAtual = "semanal";
 let dadosAtuais = null;
 
 
-
-/* =========================================================
-   OBTER DADOS DO RELATÓRIO
-
-   Hoje:
-   pega os dados simulados.
-
-   Futuramente:
-   poderá consultar uma API ligada ao MySQL.
-   ========================================================= */
 
 async function obterDadosRelatorio(periodo) {
 
