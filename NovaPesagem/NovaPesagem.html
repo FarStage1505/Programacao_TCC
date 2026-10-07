@@ -146,15 +146,43 @@
             background: #070807;
 
             flex-shrink: 0;
+            overflow: hidden;
         }
 
-        .logo-box img {
-            width: 100%;
-            height: 100%;
+        .logo-box::before {
+            content: "";
 
-            display: block;
+            position: absolute;
 
-            object-fit: cover;
+            width: 25px;
+            height: 26px;
+
+            border:
+                3px solid var(--orange);
+
+            border-left-color:
+                transparent;
+
+            border-radius: 8px;
+
+            transform:
+                rotate(-11deg)
+                skew(-7deg);
+        }
+
+        .logo-s {
+            position: relative;
+
+            z-index: 2;
+
+            color: var(--orange);
+
+            font-size: 20px;
+            font-weight: 900;
+            font-style: italic;
+
+            transform:
+                skew(-8deg);
         }
 
         .logo-name {
@@ -878,6 +906,13 @@
             min-width: 162px;
         }
 
+        .register-button:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+            box-shadow: none;
+            filter: grayscale(.25);
+        }
+
 
         /* ==================================================
            RESULTADO
@@ -973,6 +1008,19 @@
         }
 
         .status-critico::before {
+            background: #ff2948;
+        }
+
+        .status-invalido {
+            color: #ff3150;
+
+            background: #3a1018;
+
+            border:
+                1px solid #641f2c;
+        }
+
+        .status-invalido::before {
             background: #ff2948;
         }
 
@@ -1336,7 +1384,7 @@
         <div class="logo-area">
 
             <div class="logo-box">
-                <img src="../logo-loadsense.jpg" alt="LoadSense">
+                <span class="logo-s">S</span>
             </div>
 
             <div class="logo-text">
@@ -1397,7 +1445,7 @@
             </a>
 
 
-            <a class="sidebar-item" href="../Alertas.html">
+            <a class="sidebar-item" href="#">
 
                 <svg viewBox="0 0 24 24">
                     <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
@@ -1410,7 +1458,7 @@
             </a>
 
 
-            <a class="sidebar-item" href="../Relatorios.html">
+            <a class="sidebar-item" href="#">
 
                 <svg viewBox="0 0 24 24">
                     <path d="M6 3h9l4 4v14H6z"></path>
@@ -1425,7 +1473,7 @@
             </a>
 
 
-            <a class="sidebar-item" href="#">
+            <a class="sidebar-item" href="../Historico/Historico.html">
 
                 <svg viewBox="0 0 24 24">
                     <path d="M4 12a8 8 0 1 0 2.5-5.7"></path>
@@ -1438,7 +1486,7 @@
             </a>
 
 
-            <a class="sidebar-item" href="#">
+            <a class="sidebar-item" href="../Monitoramento/Monitoramento.html">
 
                 <svg viewBox="0 0 24 24">
                     <path d="m12 3 1.4 4.6L18 9l-4.6 1.4L12 15l-1.4-4.6L6 9l4.6-1.4z"></path>
@@ -1449,7 +1497,7 @@
             </a>
 
 
-            <a class="sidebar-item" href="#">
+            <a class="sidebar-item" href="../Configuracoes/Configuracoes.html">
 
                 <svg viewBox="0 0 24 24">
                     <circle cx="12" cy="12" r="3"></circle>
@@ -1894,7 +1942,9 @@
 
                             <button
                                 class="next-button register-button"
+                                id="registerButton"
                                 onclick="registerWeighing()"
+                                disabled
                             >
                                 Registrar pesagem
                             </button>
@@ -2100,6 +2150,11 @@
                 "alertText"
             );
 
+        const registerButton =
+            document.getElementById(
+                "registerButton"
+            );
+
 
 
         /* ==========================================
@@ -2196,6 +2251,62 @@
            RESULTADO EM TEMPO REAL
         ========================================== */
 
+        function weightsMatch(
+            empty,
+            cargo,
+            real
+        ) {
+
+            const expected =
+                empty + cargo;
+
+            return real === expected;
+
+        }
+
+
+        function updateRegisterAvailability() {
+
+            const empty =
+                numberValue(
+                    emptyWeight
+                );
+
+            const cargo =
+                numberValue(
+                    cargoWeight
+                );
+
+            const real =
+                numberValue(
+                    loadedWeight
+                );
+
+
+            const allWeightsFilled =
+                empty > 0
+                &&
+                cargo > 0
+                &&
+                real > 0;
+
+
+            const valid =
+                allWeightsFilled
+                &&
+                weightsMatch(
+                    empty,
+                    cargo,
+                    real
+                );
+
+
+            registerButton.disabled =
+                !valid;
+
+        }
+
+
         function updateResults() {
 
             const empty =
@@ -2249,11 +2360,13 @@
                 `${formatSignedKg(difference)} (${formatPercentage(percentage)})`;
 
 
+            updateRegisterAvailability();
+
+
             /*
-                Na gravação, enquanto ainda não existe
-                peso real do caminhão carregado o status
-                continua como Normal e aparece
-                "Aguardando dados".
+                Antes da etapa 3, ou enquanto o peso
+                carregado ainda não foi informado,
+                o sistema apenas aguarda os dados.
             */
 
             if (
@@ -2272,72 +2385,44 @@
             }
 
 
-            const absolute =
-                Math.abs(
-                    percentage
-                );
+            /*
+                REGRA OBRIGATÓRIA:
+                caminhão vazio + carga deve ser
+                exatamente igual ao caminhão carregado.
 
+                Se não for igual, a pesagem fica
+                inválida e o botão de registro
+                permanece desabilitado.
+            */
 
             if (
-                absolute <= 1
+                !weightsMatch(
+                    empty,
+                    cargo,
+                    real
+                )
             ) {
 
                 setStatus(
-                    "normal",
-                    "Peso dentro do esperado"
+                    "invalido",
+                    "Pesagem não pode ser registrada: o peso carregado deve ser igual à soma do caminhão vazio com a carga."
                 );
 
-            }
-
-            else if (
-                absolute <= 3
-            ) {
-
-                if (
-                    difference > 0
-                ) {
-
-                    setStatus(
-                        "atencao",
-                        "Peso acima do esperado"
-                    );
-
-                }
-
-                else {
-
-                    setStatus(
-                        "atencao",
-                        "Peso abaixo do esperado"
-                    );
-
-                }
+                return;
 
             }
 
-            else {
 
-                if (
-                    difference > 0
-                ) {
+            /*
+                Se os três valores conferem, não existe
+                diferença e a operação está pronta
+                para ser registrada.
+            */
 
-                    setStatus(
-                        "critico",
-                        "Excesso de peso crítico"
-                    );
-
-                }
-
-                else {
-
-                    setStatus(
-                        "critico",
-                        "Possível falta de carga"
-                    );
-
-                }
-
-            }
+            setStatus(
+                "normal",
+                "Pesagem válida — valores conferidos"
+            );
 
         }
 
@@ -2426,6 +2511,24 @@
 
                 statusBadge.textContent =
                     "Crítico";
+
+            }
+
+
+            if (
+                status === "invalido"
+            ) {
+
+                statusBadge.classList.add(
+                    "status-invalido"
+                );
+
+                differenceBox.classList.add(
+                    "critico"
+                );
+
+                statusBadge.textContent =
+                    "Inválido";
 
             }
 
@@ -2572,7 +2675,132 @@
 
         function registerWeighing() {
 
-            updateResults();
+            const empty =
+                numberValue(
+                    emptyWeight
+                );
+
+            const cargo =
+                numberValue(
+                    cargoWeight
+                );
+
+            const real =
+                numberValue(
+                    loadedWeight
+                );
+
+
+            const expected =
+                empty + cargo;
+
+
+            /*
+                Impede registro com campos de peso
+                vazios ou zerados.
+            */
+
+            if (
+                empty <= 0
+                ||
+                cargo <= 0
+                ||
+                real <= 0
+            ) {
+
+                setStatus(
+                    "invalido",
+                    "Preencha os três pesos antes de registrar a pesagem."
+                );
+
+                updateRegisterAvailability();
+
+                return;
+
+            }
+
+
+            /*
+                Validação final de segurança.
+                Mesmo que alguém tente chamar esta
+                função manualmente, a operação não é
+                registrada se os pesos não conferirem.
+            */
+
+            if (
+                !weightsMatch(
+                    empty,
+                    cargo,
+                    real
+                )
+            ) {
+
+                const difference =
+                    real - expected;
+
+
+                expectedResult.textContent =
+                    formatKg(
+                        expected
+                    );
+
+
+                realResult.textContent =
+                    formatKg(
+                        real
+                    );
+
+
+                differenceResult.textContent =
+                    `${formatSignedKg(difference)} (${formatPercentage(
+                        expected > 0
+                            ? (
+                                difference
+                                /
+                                expected
+                            )
+                            * 100
+                            : 0
+                    )})`;
+
+
+                setStatus(
+                    "invalido",
+                    "Pesagem não registrada: o peso carregado deve ser igual à soma do caminhão vazio com a carga."
+                );
+
+
+                updateRegisterAvailability();
+
+                return;
+
+            }
+
+
+            /*
+                PESAGEM VÁLIDA
+            */
+
+            expectedResult.textContent =
+                formatKg(
+                    expected
+                );
+
+
+            realResult.textContent =
+                formatKg(
+                    real
+                );
+
+
+            differenceResult.textContent =
+                "0 kg (0%)";
+
+
+            setStatus(
+                "normal",
+                "Pesagem válida — valores conferidos"
+            );
 
 
             const toast =
@@ -2588,14 +2816,13 @@
 
 
             toastDescription.textContent =
-                "Status: "
+                "Peso conferido: "
                 +
-                statusBadge.textContent
-                    .toLowerCase()
+                formatKg(
+                    real
+                )
                 +
-                " · "
-                +
-                alertText.textContent;
+                " · Status: normal";
 
 
             toast.classList.add(
